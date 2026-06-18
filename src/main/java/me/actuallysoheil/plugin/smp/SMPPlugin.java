@@ -2,7 +2,11 @@ package me.actuallysoheil.plugin.smp;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import lombok.val;
+import me.actuallysoheil.plugin.smp.command.SMPCommand;
 import me.actuallysoheil.plugin.smp.command.TeamCommand;
+import me.actuallysoheil.plugin.smp.manager.ConfigManager;
+import me.actuallysoheil.plugin.smp.manager.PluginSettingsManager;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +18,9 @@ public final class SMPPlugin extends JavaPlugin {
     @Getter
     private static SMPPlugin instance;
 
+    private ConfigManager configManager;
+    private PluginSettingsManager pluginSettingsManager;
+
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
 
@@ -21,8 +28,13 @@ public final class SMPPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.teamManager = new TeamManager();
-        this.teamInvitationManager = new TeamInvitationManager(this.teamManager);
+        this.configManager = new ConfigManager(this);
+        this.pluginSettingsManager = new PluginSettingsManager(this, this.configManager);
+        this.pluginSettingsManager.reloadPluginSettings();
+
+        val pluginSettings = this.pluginSettingsManager.pluginSettings();
+        this.teamManager = new TeamManager(pluginSettings);
+        this.teamInvitationManager = new TeamInvitationManager(pluginSettings, this.teamManager);
 
         registerCommands();
     }
@@ -33,6 +45,7 @@ public final class SMPPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
+        new SMPCommand(this);
         new TeamCommand(this);
     }
 

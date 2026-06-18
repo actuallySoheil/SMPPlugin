@@ -2,6 +2,7 @@ package me.actuallysoheil.plugin.smp.manager;
 
 import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
+import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import me.actuallysoheil.plugin.smp.task.PlayerTeamInvitationTask;
 import me.actuallysoheil.plugin.smp.team.SMPTeam;
 import me.actuallysoheil.plugin.smp.team.status.TeamAcceptInvitationStatus;
@@ -17,12 +18,15 @@ import java.util.UUID;
 
 public final class TeamInvitationManager {
 
-    private static final int MAX_TEAM_MEMBERS = 6;
+    private final @NotNull PluginSettings pluginSettings;
 
     private final @NotNull TeamManager teamManager;
     private final @NotNull HashMap<SMPTeam, HashSet<UUID>> pendingTeamInvites;
 
-    public TeamInvitationManager(@NotNull TeamManager teamManager) {
+    public TeamInvitationManager(@NotNull PluginSettings pluginSettings,
+                                 @NotNull TeamManager teamManager) {
+        this.pluginSettings = pluginSettings;
+
         this.teamManager = teamManager;
         this.pendingTeamInvites = new HashMap<>();
     }
@@ -32,7 +36,8 @@ public final class TeamInvitationManager {
         val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
         if (playerTeam == null) return TeamInvitationStatus.PLAYER_LACKING_TEAM;
         if (!playerTeam.isTeamLeader(playerId)) return TeamInvitationStatus.PLAYER_NOT_LEADER;
-        if (playerTeam.teamMembers().size() >= MAX_TEAM_MEMBERS) return TeamInvitationStatus.TEAM_ON_CAPACITY;
+        if (playerTeam.teamMembers().size() >= this.pluginSettings.maxTeamMember())
+            return TeamInvitationStatus.TEAM_ON_CAPACITY;
 
         val targetPlayer = Bukkit.getPlayerExact(targetName);
         if (targetPlayer == null) return TeamInvitationStatus.TARGET_OFFLINE;
@@ -63,6 +68,7 @@ public final class TeamInvitationManager {
         }
 
         new PlayerTeamInvitationTask(
+                this.pluginSettings,
                 playerTeam, targetPlayer,
                 teamInvitationTask -> {
                     if (this.teamManager.findTeamById(playerTeam.teamId()) != null) return;
@@ -107,7 +113,8 @@ public final class TeamInvitationManager {
         if (pendingTargetTeamInvites.isEmpty() || !pendingTargetTeamInvites.contains(playerId))
             return TeamAcceptInvitationStatus.PLAYER_LACKING_INVITE;
 
-        if (targetTeam.teamMembers().size() >= MAX_TEAM_MEMBERS) return TeamAcceptInvitationStatus.TEAM_ON_CAPACITY;
+        if (targetTeam.teamMembers().size() >= this.pluginSettings.maxTeamMember())
+            return TeamAcceptInvitationStatus.TEAM_ON_CAPACITY;
 
         val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
         if (playerTeam != null) return TeamAcceptInvitationStatus.PLAYER_HAS_TEAM;

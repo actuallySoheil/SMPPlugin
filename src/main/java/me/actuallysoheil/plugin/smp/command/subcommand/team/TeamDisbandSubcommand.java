@@ -1,4 +1,4 @@
-package me.actuallysoheil.plugin.smp.command.subcommand;
+package me.actuallysoheil.plugin.smp.command.subcommand.team;
 
 import lombok.RequiredArgsConstructor;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;

@@ -1,6 +1,7 @@
 package me.actuallysoheil.plugin.smp.manager;
 
 import lombok.val;
+import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import me.actuallysoheil.plugin.smp.team.SMPTeam;
 import me.actuallysoheil.plugin.smp.team.status.*;
 import me.actuallysoheil.plugin.smp.utility.DefaultMessages;
@@ -16,16 +17,15 @@ import java.util.concurrent.TimeUnit;
 
 public final class TeamManager {
 
-    private static final @NotNull String ALLOWED_TEAM_ID_REGEX = "^[a-zA-Z0-9_]+$";
-    private static final int MAX_TEAM_ID_LENGTH = 12;
-    private static final int TEAM_CREATION_COOLDOWN_TIME_SECONDS = 60;
-
     private final @NotNull HashSet<SMPTeam> teams;
+
+    private final @NotNull PluginSettings pluginSettings;
 
     // todo: resume cooldown time on server restart.
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown;
 
-    public TeamManager() {
+    public TeamManager(@NotNull PluginSettings pluginSettings) {
+        this.pluginSettings = pluginSettings;
         this.teams = new HashSet<>();
 
         this.teamCreationCooldown = new TimedHashSet<>();
@@ -33,13 +33,15 @@ public final class TeamManager {
 
     public @NotNull TeamCreationStatus createTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
         if (findTeamByPlayerId(teamLeaderId) != null) return TeamCreationStatus.PLAYER_HAS_TEAM;
-        if (!teamId.matches(ALLOWED_TEAM_ID_REGEX)) return TeamCreationStatus.TEAM_ID_INVALID;
-        if (teamId.length() > MAX_TEAM_ID_LENGTH) return TeamCreationStatus.TEAM_ID_LONG;
+        if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex())) return TeamCreationStatus.TEAM_ID_INVALID;
+        if (teamId.length() > this.pluginSettings.maxTeamIdLength()) return TeamCreationStatus.TEAM_ID_LONG;
         if (findTeamById(teamId) != null) return TeamCreationStatus.TEAM_ID_EXISTS;
         if (this.teamCreationCooldown.contains(teamLeaderId)) return TeamCreationStatus.PLAYER_TEAM_CREATION_COOLDOWN;
 
         this.teams.add(new SMPTeam(teamId, teamLeaderId));
-        this.teamCreationCooldown.add(teamLeaderId, TEAM_CREATION_COOLDOWN_TIME_SECONDS, TimeUnit.SECONDS);
+        this.teamCreationCooldown.add(
+                teamLeaderId, this.pluginSettings.teamCreationCooldownTimeSeconds(), TimeUnit.SECONDS
+        );
         return TeamCreationStatus.SUCCESSFUL;
     }
 
