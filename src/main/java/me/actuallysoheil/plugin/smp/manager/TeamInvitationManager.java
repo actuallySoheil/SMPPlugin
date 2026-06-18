@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class TeamInvitationManager {
+public final class TeamInvitationManager {
 
     private static final int MAX_TEAM_MEMBERS = 6;
 

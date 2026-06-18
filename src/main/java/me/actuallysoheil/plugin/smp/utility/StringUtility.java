@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @UtilityClass
-public class StringUtility {
+public final class StringUtility {
 
     public @NotNull String formatTagColorName(@NotNull String input) {
         return Arrays.stream(input.split("_"))
