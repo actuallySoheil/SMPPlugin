@@ -65,13 +65,8 @@ public class TeamInvitationManager {
         new PlayerTeamInvitationTask(
                 playerTeam, targetPlayer,
                 teamInvitationTask -> {
-                    if (this.teamManager.findTeamById(playerTeam.teamId()) == null) {
-                        Bukkit.getOnlinePlayers()
-                                .forEach(onlinePlayer -> onlinePlayer.sendMessage(
-                                        "<red>Task canceled"
-                                ));
-                        teamInvitationTask.cancel();
-                    }
+                    if (this.teamManager.findTeamById(playerTeam.teamId()) != null) return;
+                    teamInvitationTask.cancel();
                 },
                 () -> {
                     pendingTeamInvites(playerTeam).remove(targetId);
