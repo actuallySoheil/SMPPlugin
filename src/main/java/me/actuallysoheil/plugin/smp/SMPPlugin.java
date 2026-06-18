@@ -5,7 +5,6 @@ import lombok.experimental.Accessors;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.SMPCommand;
 import me.actuallysoheil.plugin.smp.command.TeamCommand;
-import me.actuallysoheil.plugin.smp.manager.ConfigManager;
 import me.actuallysoheil.plugin.smp.manager.PluginSettingsManager;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
@@ -18,7 +17,6 @@ public final class SMPPlugin extends JavaPlugin {
     @Getter
     private static SMPPlugin instance;
 
-    private ConfigManager configManager;
     private PluginSettingsManager pluginSettingsManager;
 
     private TeamManager teamManager;
@@ -28,8 +26,7 @@ public final class SMPPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.configManager = new ConfigManager(this);
-        this.pluginSettingsManager = new PluginSettingsManager(this, this.configManager);
+        this.pluginSettingsManager = new PluginSettingsManager(this);
         this.pluginSettingsManager.reloadPluginSettings();
 
         val pluginSettings = this.pluginSettingsManager.pluginSettings();

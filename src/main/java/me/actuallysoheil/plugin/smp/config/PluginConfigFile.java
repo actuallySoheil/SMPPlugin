@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.function.Consumer;
 
 @Accessors(fluent = true)
 @RequiredArgsConstructor
@@ -34,6 +39,7 @@ public final class PluginConfigFile {
     @SneakyThrows
     public void createFile() {
         if (exists()) return;
+        createPluginDataFolder();
         if (this.file.createNewFile()) return;
 
         PLUGIN.getLogger().severe(
@@ -41,6 +47,29 @@ public final class PluginConfigFile {
                         .formatted(this.file.getName())
         );
         PLUGIN.disablePlugin();
+    }
+
+    public boolean copyFromResource(@NotNull String fileName,
+                                    @NotNull Consumer<IOException> whenFailed) {
+        createPluginDataFolder();
+        val toBePlaced = new File(PLUGIN.getDataFolder(), fileName + ".yml");
+        return copyFromResource(toBePlaced, fileName, whenFailed);
+    }
+
+    public boolean copyFromResource(@NotNull File toBePlaced,
+                                    @NotNull String fileName,
+                                    @NotNull Consumer<IOException> whenFailed) {
+        createPluginDataFolder();
+        val inputStream = PLUGIN.getResource(fileName + ".yml");
+        if (inputStream == null) return false;
+
+        try (inputStream) {
+            Files.copy(inputStream, toBePlaced.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            return true;
+        } catch (IOException exception) {
+            whenFailed.accept(exception);
+            return false;
+        }
     }
 
     public void load() {
@@ -59,6 +88,17 @@ public final class PluginConfigFile {
 
     public boolean exists() {
         return this.file.exists();
+    }
+
+    private void createPluginDataFolder() {
+        val pluginDataFolder = PLUGIN.getDataFolder();
+        if (pluginDataFolder.exists()) return;
+        if (pluginDataFolder.mkdir()) return;
+
+        PLUGIN.getLogger().severe(
+                "[Config] [ERROR] Failed to create plugin data folder. Disabling plugin..."
+        );
+        PLUGIN.disablePlugin();
     }
 
 }

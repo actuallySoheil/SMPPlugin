@@ -8,46 +8,35 @@ import me.actuallysoheil.plugin.smp.config.PluginConfigFile;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-
 @Accessors(fluent = true)
 public final class PluginSettingsManager {
 
     private final @NotNull SMPPlugin plugin;
 
-    private final @NotNull ConfigManager configManager;
-    private final @NotNull PluginConfigFile settingsConfigFile;
-
+    private final @NotNull PluginConfigFile pluginSettingsConfigFile;
     @Getter
     private final @NotNull PluginSettings pluginSettings;
 
-    public PluginSettingsManager(@NotNull SMPPlugin plugin,
-                                 @NotNull ConfigManager configManager) {
+    public PluginSettingsManager(@NotNull SMPPlugin plugin) {
         this.plugin = plugin;
 
-        this.configManager = configManager;
-        this.settingsConfigFile = configManager.settingsConfigFile();
-
+        this.pluginSettingsConfigFile = new PluginConfigFile("settings");
         this.pluginSettings = new PluginSettings();
     }
 
     public void reloadPluginSettings() {
-        val settingsFile = new File(this.plugin.getDataFolder(), "settings.yml");
-        if (!settingsFile.exists()) {
-            try {
-                this.configManager.copyFromResource(settingsFile, "settings.yml");
-            } catch (@NotNull IOException exception) {
-                this.plugin.getLogger().severe(
-                        "[Language] [ERROR] Failed to copy default settings file. Disabling plugin..."
-                );
-                this.plugin.disablePlugin();
-                return;
-            }
-        }
+        if (!this.pluginSettingsConfigFile.exists()) if (!this.pluginSettingsConfigFile.copyFromResource(
+                "settings",
+                _ -> {
+                    this.plugin.getLogger().severe(
+                            "[Language] [ERROR] Failed to copy default settings file. Disabling plugin..."
+                    );
+                    this.plugin.disablePlugin();
+                }
+        )) return;
 
-        this.settingsConfigFile.load();
-        val config = this.settingsConfigFile.config();
+        this.pluginSettingsConfigFile.load();
+        val config = this.pluginSettingsConfigFile.config();
 
         val allowedTeamIdRegex = config.getString("settings.team.allowed-id-regex", "^[a-zA-Z0-9_]+$");
         val maxTeamIdLength = config.getInt("settings.team.id-max-length", 12);
