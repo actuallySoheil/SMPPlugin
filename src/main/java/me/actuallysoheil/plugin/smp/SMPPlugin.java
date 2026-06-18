@@ -36,4 +36,8 @@ public final class SMPPlugin extends JavaPlugin {
         new TeamCommand(this);
     }
 
+    public void disablePlugin() {
+        getServer().getPluginManager().disablePlugin(this);
+    }
+
 }
