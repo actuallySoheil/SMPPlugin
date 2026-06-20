@@ -1,7 +1,7 @@
 package me.actuallysoheil.plugin.smp.task;
 
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
-import me.actuallysoheil.plugin.smp.team.SMPTeam;
+import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;

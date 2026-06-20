@@ -1,4 +1,4 @@
-package me.actuallysoheil.plugin.smp.team;
+package me.actuallysoheil.plugin.smp.model.team;
 
 import lombok.Getter;
 import lombok.Setter;

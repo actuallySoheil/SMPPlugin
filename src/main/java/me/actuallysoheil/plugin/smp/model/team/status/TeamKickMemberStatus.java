@@ -1,4 +1,4 @@
-package me.actuallysoheil.plugin.smp.team.status;
+package me.actuallysoheil.plugin.smp.model.team.status;
 
 public enum TeamKickMemberStatus {
 

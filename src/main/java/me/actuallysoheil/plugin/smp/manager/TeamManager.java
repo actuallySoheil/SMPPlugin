@@ -2,8 +2,8 @@ package me.actuallysoheil.plugin.smp.manager;
 
 import lombok.val;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
-import me.actuallysoheil.plugin.smp.team.SMPTeam;
-import me.actuallysoheil.plugin.smp.team.status.*;
+import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
+import me.actuallysoheil.plugin.smp.model.team.status.*;
 import me.actuallysoheil.plugin.smp.utility.DefaultMessages;
 import me.actuallysoheil.plugin.smp.utility.TimedHashSet;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
