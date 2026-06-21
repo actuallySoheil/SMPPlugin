@@ -20,7 +20,7 @@ public final class SMPCommand extends Command {
     private final @NotNull String helpMessage;
 
     public SMPCommand(@NotNull SMPPlugin plugin) {
-        super(SMP_COMMAND_LABEL);
+        super(SMP_COMMAND_LABEL, "smp.command.smp");
         this.subCommands = new ArrayList<>();
 
         this.subCommands.add(new SMPReloadSubcommand(plugin.pluginSettingsManager()));
