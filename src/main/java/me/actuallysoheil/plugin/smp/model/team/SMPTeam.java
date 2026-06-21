@@ -3,7 +3,9 @@ package me.actuallysoheil.plugin.smp.model.team;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.kyori.adventure.audience.Audience;
+import me.actuallysoheil.plugin.smp.model.audience.SMPAudience;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
@@ -20,14 +22,11 @@ import java.util.UUID;
 public final class SMPTeam {
 
     private final @NotNull String teamId;
+    private final @NotNull HashSet<UUID> teamMembers;
+    private final @NotNull SMPTeamSettings teamSettings;
     @Setter
     private @NotNull UUID teamLeaderId;
-
-    private final @NotNull HashSet<UUID> teamMembers;
-
-    private final @NotNull SMPTeamSettings teamSettings;
-
-    private Audience teamAudience;
+    private SMPAudience teamAudience;
 
     public SMPTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
         this.teamId = teamId;
@@ -53,16 +52,25 @@ public final class SMPTeam {
     }
 
     private void updateTeamAudience() {
-        this.teamAudience = Audience.audience(
+        this.teamAudience = SMPAudience.of(
                 this.teamMembers.stream()
                         .map(Bukkit::getPlayer)
                         .filter(Objects::nonNull)
-                        .toArray(Audience[]::new)
+                        .toList()
         );
     }
 
     public void sendMessage(@NotNull Component component) {
         this.teamAudience.sendMessage(component);
+    }
+
+    public void sendLocalizedMessage(@NotNull LanguagePath languagePath) {
+        this.teamAudience.sendLocalizedMessage(languagePath);
+    }
+
+    public void sendLocalizedMessage(@NotNull LanguagePath languagePath,
+                                     @NotNull PlaceholderLike placeholderLike) {
+        this.teamAudience.sendLocalizedMessage(languagePath, placeholderLike);
     }
 
     public void playSound(@NotNull Sound sound) {

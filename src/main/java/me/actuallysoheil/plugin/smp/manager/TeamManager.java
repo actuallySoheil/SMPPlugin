@@ -2,11 +2,11 @@ package me.actuallysoheil.plugin.smp.manager;
 
 import lombok.val;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
 import me.actuallysoheil.plugin.smp.model.team.status.*;
-import me.actuallysoheil.plugin.smp.utility.DefaultMessages;
 import me.actuallysoheil.plugin.smp.utility.TimedHashSet;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +50,7 @@ public final class TeamManager {
         if (playerTeam == null) return TeamDisbandStatus.PLAYER_LACKING_TEAM;
         if (!playerTeam.isTeamLeader(playerId)) return TeamDisbandStatus.PLAYER_NOT_LEADER;
 
-        playerTeam.sendMessage(DefaultMessages.TEAM_DISBAND.message());
+        playerTeam.sendLocalizedMessage(LanguagePath.BROADCAST_TEAM_DISBAND);
         playerTeam.teamMembers().clear();
 
         this.teams.remove(playerTeam);
@@ -69,12 +69,11 @@ public final class TeamManager {
         if (!playerTeam.isTeamMember(targetId)) return TeamKickMemberStatus.TARGET_NOT_IN_TEAM;
 
         playerTeam.removeMember(targetId);
-        playerTeam.sendMessage(DefaultMessages.TEAM_MEMBER_KICK.message(
-                Placeholder.unparsed(
-                        "player_name",
-                        targetPlayer.getName() != null ? targetPlayer.getName() : "A member"
-                )
-        ));
+        playerTeam.sendLocalizedMessage(
+                LanguagePath.BROADCAST_TEAM_KICK,
+                PlaceholderLike.builder()
+                        .append("member_name", targetPlayer.getName() != null ? targetPlayer.getName() : "???")
+        );
 
         return TeamKickMemberStatus.SUCCESSFUL;
     }
@@ -92,15 +91,17 @@ public final class TeamManager {
         if (!playerTeam.isTeamMember(targetId)) return TeamTransferStatus.TARGET_NOT_IN_TEAM;
 
         val offlineOldLeader = Bukkit.getOfflinePlayer(playerTeam.teamLeaderId());
-        val oldLeaderUsername = offlineOldLeader.getName() != null ? offlineOldLeader.getName() : "Old leader";
+        val oldLeaderUsername = offlineOldLeader.getName() != null ? offlineOldLeader.getName() : "???";
 
         val offlineNewLeader = Bukkit.getOfflinePlayer(playerId);
-        val newLeaderUsername = offlineNewLeader.getName() != null ? offlineNewLeader.getName() : "New leader";
+        val newLeaderUsername = offlineNewLeader.getName() != null ? offlineNewLeader.getName() : "???";
 
-        playerTeam.sendMessage(DefaultMessages.TEAM_MEMBER_TRANSFER.message(
-                Placeholder.unparsed("old_leader", oldLeaderUsername),
-                Placeholder.unparsed("new_leader", newLeaderUsername)
-        ));
+        playerTeam.sendLocalizedMessage(
+                LanguagePath.BROADCAST_TEAM_TRANSFER,
+                PlaceholderLike.builder()
+                        .append("old_leader", oldLeaderUsername)
+                        .append("new_leader", newLeaderUsername)
+        );
         playerTeam.teamLeaderId(targetId);
 
         return TeamTransferStatus.SUCCESSFUL;
@@ -112,12 +113,14 @@ public final class TeamManager {
         if (playerTeam.isTeamLeader(playerId)) return TeamLeaveStatus.PLAYER_IS_LEADER;
 
         val offlinePlayer = Bukkit.getOfflinePlayer(playerId);
-        val offlineUsername = offlinePlayer.getName() != null ? offlinePlayer.getName() : "A member";
+        val memberUsername = offlinePlayer.getName() != null ? offlinePlayer.getName() : "A member";
 
         playerTeam.teamMembers().remove(playerId);
-        playerTeam.sendMessage(DefaultMessages.TEAM_MEMBER_LEAVE.message(
-                Placeholder.unparsed("player_name", offlineUsername)
-        ));
+
+        playerTeam.sendLocalizedMessage(
+                LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
+                PlaceholderLike.builder().append("member_name", memberUsername)
+        );
 
         return TeamLeaveStatus.SUCCESSFUL;
     }

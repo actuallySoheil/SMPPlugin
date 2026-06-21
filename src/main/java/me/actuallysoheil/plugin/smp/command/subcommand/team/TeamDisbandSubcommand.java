@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
@@ -17,8 +19,10 @@ public final class TeamDisbandSubcommand extends SubExecutor {
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         switch (this.teamManager.disbandTeam(player.getUniqueId())) {
-            case PLAYER_LACKING_TEAM -> player.sendRichMessage("<red>You don't own team.");
-            case PLAYER_NOT_LEADER -> player.sendRichMessage("<red>Only team leader can disband the team.");
+            case PLAYER_LACKING_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+            case PLAYER_NOT_LEADER ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
         }
     }
 

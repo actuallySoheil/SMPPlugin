@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
@@ -17,10 +19,10 @@ public final class TeamLeaveSubcommand extends SubExecutor {
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         switch (this.teamManager.leaveTeam(player.getUniqueId())) {
-            case PLAYER_LACKING_TEAM -> player.sendRichMessage("<red>You don't have a team!");
-            case PLAYER_IS_LEADER -> player.sendRichMessage(
-                    "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
-            );
+            case PLAYER_LACKING_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+            case PLAYER_IS_LEADER ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_LEADER_CANNOT_LEAVE);
         }
     }
 

@@ -5,6 +5,8 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
@@ -25,10 +27,11 @@ public final class TeamAcceptInvitationSubcommand extends SubExecutor {
         val teamId = arguments[0].toLowerCase();
         switch (this.teamInvitationManager.acceptInvite(teamId, player.getUniqueId())) {
             case PLAYER_HAS_TEAM ->
-                    player.sendRichMessage("<red>Leave your current team to accept this team invitation.");
-            case PLAYER_LACKING_INVITE -> player.sendRichMessage("<red>You don't have an invitation from this team.");
-            case TEAM_INVALID -> player.sendRichMessage("<red>Team by this name doesn't exist!");
-            case TEAM_ON_CAPACITY -> player.sendRichMessage("<red>Cannot accept this invitation. Team is full.");
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_HAS_TEAM);
+            case PLAYER_LACKING_INVITE ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_INVITATION_LACKING);
+            case TEAM_INVALID -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NOT_EXISTS);
+            case TEAM_ON_CAPACITY -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY);
         }
     }
 

@@ -5,6 +5,8 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
@@ -24,15 +26,18 @@ public final class TeamInviteSubcommand extends SubExecutor {
 
         val targetPlayerName = arguments[0];
         switch (this.teamInvitationManager.invitePlayer(player.getUniqueId(), targetPlayerName)) {
-            case PLAYER_LACKING_TEAM -> player.sendRichMessage("<red>You don't have a team!");
-            case PLAYER_NOT_LEADER -> player.sendRichMessage("<red>Only team leader can invite players.");
-            case TEAM_ON_CAPACITY ->
-                    player.sendRichMessage("<red>Cannot invite a new member. Team has reached the maximum amount of members.");
-            case TARGET_OFFLINE -> player.sendRichMessage("<red>Target player is offline!");
-            case TARGET_HAS_TEAM -> player.sendRichMessage("<red>Target is already in another team!");
-            case TARGET_IS_SELF -> player.sendRichMessage("<red>You cannot invite yourself!");
+            case PLAYER_LACKING_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+            case PLAYER_NOT_LEADER ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
+            case TEAM_ON_CAPACITY -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY);
+            case TARGET_OFFLINE ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_GENERAL_PLAYER_OFFLINE);
+            case TARGET_HAS_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_HAS_TEAM);
+            case TARGET_IS_SELF -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_IS_SELF);
             case TARGET_ALREADY_INVITED ->
-                    player.sendRichMessage("<red>You've already invited this person. Wait for them to accept the team invitation.");
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_INVITATION_ALREADY_INVITED);
         }
     }
 

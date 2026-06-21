@@ -5,6 +5,8 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
@@ -24,11 +26,15 @@ public final class TeamTransferSubcommand extends SubExecutor {
 
         val targetPlayerName = arguments[0];
         switch (this.teamManager.transferTeamLeader(player.getUniqueId(), targetPlayerName)) {
-            case PLAYER_LACKING_TEAM -> player.sendRichMessage("<red>You don't have a team!");
-            case PLAYER_NOT_LEADER -> player.sendRichMessage("<red>Only team leader can transfer leadership.");
-            case TARGET_OFFLINE -> player.sendRichMessage("<red>Target player is offline!");
-            case TARGET_NOT_IN_TEAM -> player.sendRichMessage("<red>Target is not in the team!");
-            case TARGET_IS_SELF -> player.sendRichMessage("<red>You cannot transfer team leadership to yourself!");
+            case PLAYER_LACKING_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+            case PLAYER_NOT_LEADER ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
+            case TARGET_OFFLINE ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_GENERAL_PLAYER_OFFLINE);
+            case TARGET_NOT_IN_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_LACKING_TEAM);
+            case TARGET_IS_SELF -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_IS_SELF);
         }
     }
 

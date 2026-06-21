@@ -3,12 +3,13 @@ package me.actuallysoheil.plugin.smp.manager;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
-import me.actuallysoheil.plugin.smp.task.PlayerTeamInvitationTask;
+import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
+import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamAcceptInvitationStatus;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamInvitationStatus;
-import me.actuallysoheil.plugin.smp.utility.DefaultMessages;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import me.actuallysoheil.plugin.smp.task.PlayerTeamInvitationTask;
+import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,14 +58,19 @@ public final class TeamInvitationManager {
 
         val teamLeader = Bukkit.getPlayer(playerId);
         if (teamLeader != null) {
-            playerTeam.sendMessage(DefaultMessages.TEAM_INVITE.message(
-                    Placeholder.unparsed("team_leader_name", teamLeader.getName()),
-                    Placeholder.unparsed("player_name", targetUsername)
-            ));
-            targetPlayer.sendMessage(DefaultMessages.TEAM_INVITE_TARGET.message(
-                    Placeholder.unparsed("team_leader_name", teamLeader.getName()),
-                    Placeholder.parsed("team_id", playerTeam.teamId())
-            ));
+            playerTeam.sendLocalizedMessage(
+                    LanguagePath.BROADCAST_TEAM_INVITATION_MEMBERS,
+                    PlaceholderLike.builder()
+                            .append("team_leader_name", teamLeader.getName())
+                            .append("target_name", targetUsername)
+            );
+            SMPMedia.sendMessage(
+                    targetPlayer,
+                    LanguagePath.BROADCAST_TEAM_INVITATION_TARGET,
+                    PlaceholderLike.builder()
+                            .append("team_leader_name", teamLeader.getName())
+                            .append("team_id", playerTeam.teamId())
+            );
         }
 
         new PlayerTeamInvitationTask(
@@ -76,9 +82,10 @@ public final class TeamInvitationManager {
                 },
                 () -> {
                     pendingTeamInvites(playerTeam).remove(targetId);
-                    playerTeam.sendMessage(DefaultMessages.TEAM_MEMBER_JOIN.message(
-                            Placeholder.unparsed("player_name", targetUsername)
-                    ));
+                    playerTeam.sendLocalizedMessage(
+                            LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_JOIN,
+                            PlaceholderLike.builder().append("member_name", targetUsername)
+                    );
                 },
                 () -> {
                     pendingTeamInvites(playerTeam).remove(targetId);
@@ -86,18 +93,21 @@ public final class TeamInvitationManager {
                     val offlineLeader = Bukkit.getOfflinePlayer(playerId);
                     val offlineLeaderUsername = offlineLeader.getName() != null
                             ? offlineLeader.getName()
-                            : "an unknown team";
-                    if (targetPlayer.isOnline()) targetPlayer.sendMessage(
-                            DefaultMessages.TEAM_INVITE_EXPIRED.message(
-                                    Placeholder.unparsed("team_leader_name", offlineLeaderUsername)
-                            )
+                            : "???";
+                    if (targetPlayer.isOnline()) SMPMedia.sendMessage(
+                            targetPlayer,
+                            LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED,
+                            PlaceholderLike.builder()
+                                    .append("team_leader_name", offlineLeaderUsername)
                     );
 
-                    if (offlineLeader.getPlayer() != null) offlineLeader.getPlayer().sendMessage(
-                            DefaultMessages.TEAM_INVITE_TARGET_EXPIRED.message(
-                                    Placeholder.unparsed("player_name", targetUsername)
-                            )
-                    );
+                    if (offlineLeader.getPlayer() != null) {
+                        SMPMedia.sendMessage(
+                                offlineLeader.getPlayer(),
+                                LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED_TARGET,
+                                PlaceholderLike.builder().append("target_name", targetUsername)
+                        );
+                    }
                 }
         ).runTaskTimerAsynchronously(SMPPlugin.instance(), 0L, 20L);
 
