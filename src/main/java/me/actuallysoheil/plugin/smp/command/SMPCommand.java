@@ -23,7 +23,7 @@ public final class SMPCommand extends Command {
         super(SMP_COMMAND_LABEL, "smp.command.smp");
         this.subCommands = new ArrayList<>();
 
-        this.subCommands.add(new SMPReloadSubcommand(plugin.pluginSettingsManager()));
+        this.subCommands.add(new SMPReloadSubcommand(plugin.pluginSettingsManager(), plugin.languageManager()));
 
         val stringBuilder = new StringBuilder("<newLine><dark_green>SMP <gray>[v")
                 .append(plugin.getPluginMeta().getVersion())

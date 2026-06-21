@@ -3,6 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.smp;
 import lombok.RequiredArgsConstructor;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.manager.LanguageManager;
 import me.actuallysoheil.plugin.smp.manager.PluginSettingsManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +14,13 @@ import org.jspecify.annotations.NonNull;
 public final class SMPReloadSubcommand extends SubExecutor {
 
     private final @NotNull PluginSettingsManager pluginSettingsManager;
+    private final @NotNull LanguageManager languageManager;
 
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         this.pluginSettingsManager.reloadPluginSettings();
-        player.sendRichMessage("<green>Plugin settings have been reloaded successfully.");
+        this.languageManager.reloadLanguages();
+        player.sendRichMessage("<green>Plugin settings and languages have been reloaded successfully.");
     }
 
 }
