@@ -1,6 +1,7 @@
 package me.actuallysoheil.plugin.smp.command.subcommand.team;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
@@ -18,11 +19,19 @@ public final class TeamDisbandSubcommand extends SubExecutor {
 
     @Override
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
-        switch (this.teamManager.disbandTeam(player.getUniqueId())) {
+        if (arguments.length == 0) {
+            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_DISBAND_CONFIRMATION);
+            return;
+        }
+
+        val teamId = arguments[0];
+        switch (this.teamManager.disbandTeam(player.getUniqueId(), teamId)) {
             case PLAYER_LACKING_TEAM ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
             case PLAYER_NOT_LEADER ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
+            case TEAM_NAME_INVALID ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_DISBAND_INVALID_TEAM_NAME);
         }
     }
 

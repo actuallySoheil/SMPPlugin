@@ -25,6 +25,8 @@ public enum LanguagePath {
 
     // Team
     MESSAGE_COMMAND_TEAM_CREATED("message.command.team.created"),
+    MESSAGE_COMMAND_TEAM_DISBAND_CONFIRMATION("message.command.team.disband.confirmation"),
+    MESSAGE_COMMAND_ERROR_TEAM_DISBAND_INVALID_TEAM_NAME("message.command.team.error.disband.invalid-team-name"),
     MESSAGE_COMMAND_ERROR_TEAM_EXISTS("message.command.team.error.exists"),
     MESSAGE_COMMAND_ERROR_TEAM_NOT_EXISTS("message.command.team.error.not-exists"),
     MESSAGE_COMMAND_ERROR_TEAM_NAME_LONG("message.command.team.error.long-name"),

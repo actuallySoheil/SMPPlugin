@@ -4,6 +4,7 @@ public enum TeamDisbandStatus {
 
     SUCCESSFUL,
     PLAYER_LACKING_TEAM,
-    PLAYER_NOT_LEADER
+    PLAYER_NOT_LEADER,
+    TEAM_NAME_INVALID
 
 }

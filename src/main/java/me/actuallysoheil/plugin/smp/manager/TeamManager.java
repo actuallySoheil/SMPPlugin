@@ -45,10 +45,11 @@ public final class TeamManager {
         return TeamCreationStatus.SUCCESSFUL;
     }
 
-    public @NotNull TeamDisbandStatus disbandTeam(@NotNull UUID playerId) {
+    public @NotNull TeamDisbandStatus disbandTeam(@NotNull UUID playerId, @NotNull String teamId) {
         val playerTeam = findTeamByPlayerId(playerId);
         if (playerTeam == null) return TeamDisbandStatus.PLAYER_LACKING_TEAM;
         if (!playerTeam.isTeamLeader(playerId)) return TeamDisbandStatus.PLAYER_NOT_LEADER;
+        if (!playerTeam.teamId().equalsIgnoreCase(teamId)) return TeamDisbandStatus.TEAM_NAME_INVALID;
 
         playerTeam.sendLocalizedMessage(LanguagePath.BROADCAST_TEAM_DISBAND);
         playerTeam.teamMembers().clear();

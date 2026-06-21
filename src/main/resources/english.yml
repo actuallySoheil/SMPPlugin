@@ -23,6 +23,8 @@ message:
     # team command messages
     team:
       created: "<yellow>Team <green><team_name></green> created successfully."
+      disband:
+        confirmation: "<red>To confirm, use <gold>/team disband <teamName></gold> to disband your team."
       error:
         exists: "<red>Team by this name already exists. Use another name."
         not-exists: "<red>Team by this name doesn't exist!"
@@ -41,6 +43,8 @@ message:
         invitation:
           already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
           lacking: "<red>You don't have an invitation from this team."
+        disband:
+          invalid-team-name: "<red>Failed to disband the team. Invalid team name."
         leader:
           cannot-leave: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
 
