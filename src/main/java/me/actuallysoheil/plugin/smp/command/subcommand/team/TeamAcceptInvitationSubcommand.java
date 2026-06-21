@@ -30,6 +30,7 @@ public final class TeamAcceptInvitationSubcommand extends SubExecutor {
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_HAS_TEAM);
             case PLAYER_LACKING_INVITE ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_INVITATION_LACKING);
+            case TEAM_ID_INVALID -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NAME_INVALID);
             case TEAM_INVALID -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NOT_EXISTS);
             case TEAM_ON_CAPACITY -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY);
         }

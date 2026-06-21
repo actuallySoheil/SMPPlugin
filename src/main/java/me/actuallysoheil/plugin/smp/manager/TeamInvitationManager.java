@@ -116,6 +116,9 @@ public final class TeamInvitationManager {
 
     public @NotNull TeamAcceptInvitationStatus acceptInvite(@NotNull String teamId,
                                                             @NotNull UUID playerId) {
+        if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex()))
+            return TeamAcceptInvitationStatus.TEAM_ID_INVALID;
+
         val targetTeam = this.teamManager.findTeamById(teamId);
         if (targetTeam == null) return TeamAcceptInvitationStatus.TEAM_INVALID;
 
