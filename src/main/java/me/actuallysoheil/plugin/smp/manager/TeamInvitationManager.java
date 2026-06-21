@@ -96,7 +96,7 @@ public final class TeamInvitationManager {
                             : "???";
                     if (targetPlayer.isOnline()) SMPMedia.sendMessage(
                             targetPlayer,
-                            LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED,
+                            LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED_TARGET,
                             PlaceholderLike.builder()
                                     .append("team_leader_name", offlineLeaderUsername)
                     );
@@ -104,7 +104,7 @@ public final class TeamInvitationManager {
                     if (offlineLeader.getPlayer() != null) {
                         SMPMedia.sendMessage(
                                 offlineLeader.getPlayer(),
-                                LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED_TARGET,
+                                LanguagePath.BROADCAST_TEAM_INVITATION_EXPIRED,
                                 PlaceholderLike.builder().append("target_name", targetUsername)
                         );
                     }
