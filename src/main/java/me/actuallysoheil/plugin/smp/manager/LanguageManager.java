@@ -1,6 +1,7 @@
 package me.actuallysoheil.plugin.smp.manager;
 
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import me.actuallysoheil.plugin.smp.config.PluginConfigFile;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
+@Accessors(fluent = true)
 public final class LanguageManager {
 
     private final @NotNull SMPPlugin plugin;

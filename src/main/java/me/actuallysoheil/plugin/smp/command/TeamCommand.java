@@ -14,13 +14,11 @@ import java.util.List;
 
 public final class TeamCommand extends Command {
 
-    public static final @NotNull String TEAM_COMMAND_LABEL = "team";
-
     private final @NotNull List<SubExecutor> subCommands;
     private final @NotNull String helpMessage;
 
     public TeamCommand(@NotNull SMPPlugin plugin) {
-        super(TEAM_COMMAND_LABEL);
+        super("team");
         this.subCommands = new ArrayList<>();
 
         val teamManager = plugin.teamManager();
@@ -41,7 +39,7 @@ public final class TeamCommand extends Command {
                 .append(plugin.getPluginMeta().getVersion())
                 .append("]").append("<newLine><newLine>");
         this.subCommands.forEach(subCommand -> stringBuilder.append("<green>/")
-                .append(getLabel())
+                .append(label())
                 .append(" ")
                 .append(subCommand.label())
                 .append(" <gray>- <white>")

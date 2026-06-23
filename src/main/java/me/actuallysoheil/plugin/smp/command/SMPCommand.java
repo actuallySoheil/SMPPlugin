@@ -14,13 +14,11 @@ import java.util.List;
 
 public final class SMPCommand extends Command {
 
-    public static final @NotNull String SMP_COMMAND_LABEL = "smp";
-
     private final @NotNull List<SubExecutor> subCommands;
     private final @NotNull String helpMessage;
 
     public SMPCommand(@NotNull SMPPlugin plugin) {
-        super(SMP_COMMAND_LABEL, "smp.command.smp");
+        super("smp", "smp.command.smp");
         this.subCommands = new ArrayList<>();
 
         this.subCommands.add(new SMPReloadSubcommand(plugin.pluginSettingsManager(), plugin.languageManager()));
@@ -29,7 +27,7 @@ public final class SMPCommand extends Command {
                 .append(plugin.getPluginMeta().getVersion())
                 .append("]").append("<newLine><newLine>");
         this.subCommands.forEach(subCommand -> stringBuilder.append("<green>/")
-                .append(getLabel())
+                .append(label())
                 .append(" ")
                 .append(subCommand.label())
                 .append(" <gray>- <white>")

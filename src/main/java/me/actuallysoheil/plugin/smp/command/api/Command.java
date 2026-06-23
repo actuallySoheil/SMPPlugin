@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
@@ -18,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 
+@Accessors(fluent = true)
 public abstract class Command implements BasicCommand {
 
     private static final @NotNull SMPPlugin PLUGIN = SMPPlugin.instance();
