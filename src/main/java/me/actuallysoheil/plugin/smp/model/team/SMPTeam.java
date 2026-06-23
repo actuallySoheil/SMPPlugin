@@ -3,6 +3,7 @@ package me.actuallysoheil.plugin.smp.model.team;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import me.actuallysoheil.plugin.smp.model.audience.SMPAudience;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @Getter
 @EqualsAndHashCode(of = {"teamId", "teamLeaderId"})
+@ToString(of = {"teamId", "teamMembers", "teamOptions", "teamLeaderId"})
 public final class SMPTeam {
 
     private final @NotNull String teamId;
