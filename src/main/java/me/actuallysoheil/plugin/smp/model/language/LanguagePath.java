@@ -36,6 +36,9 @@ public enum LanguagePath {
     MESSAGE_COMMAND_ERROR_TEAM_TAG_LONG("message.command.team.error.long-tag-name"),
     MESSAGE_COMMAND_ERROR_TEAM_TAG_INVALID("message.command.team.error.invalid-tag-name"),
     MESSAGE_COMMAND_ERROR_TEAM_TAG_COLOR_INVALID("message.command.team.error.invalid-tag-color"),
+    MESSAGE_COMMAND_ERROR_TEAM_HOME_UNSAFE("message.command.team.error.home-unsafe"),
+    MESSAGE_COMMAND_ERROR_TEAM_HOME_NOT_EXISTS("message.command.team.error.home-not-exists"),
+    MESSAGE_COMMAND_ERROR_TEAM_HOME_ON_COOLDOWN("message.command.team.error.home-on-cooldown"),
     MESSAGE_COMMAND_ERROR_TEAM_OPTION_UNKNOWN_ERROR("message.command.team.error.option-unknown-error"),
     MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY("message.command.team.error.on-capacity"),
     MESSAGE_COMMAND_ERROR_TEAM_PLAYER_HAS_TEAM("message.command.team.error.player.has-team"),
@@ -65,6 +68,7 @@ public enum LanguagePath {
     BROADCAST_TEAM_OPTION_TAG_COLOR_CHANGED("broadcast.team.option.tag-color-changed"),
     BROADCAST_TEAM_OPTION_FRIENDLY_FIRE_TOGGLED("broadcast.team.option.friendly-fire-toggled"),
     BROADCAST_TEAM_OPTION_CHAT_TOGGLED("broadcast.team.option.chat-toggled"),
+    BROADCAST_TEAM_OPTION_HOME_UPDATED("broadcast.team.option.home-updated"),
     BROADCAST_TEAM_OPTION_ENABLED("broadcast.team.option.enabled"),
     BROADCAST_TEAM_OPTION_DISABLED("broadcast.team.option.disabled"),
 

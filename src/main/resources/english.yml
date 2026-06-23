@@ -38,6 +38,9 @@ message:
         invalid-tag-name: "<red>Team tag can only have characters, numbers and underscores."
         invalid-tag-color: "<red>Team tag color is invalid."
         invalid-color: "<red>Team tag color is invalid."
+        home-unsafe: "<red>Failed to set the team home. Location is unsafe!"
+        home-not-exists: "<red>Team home has not been set yet!"
+        home-on-cooldown: "<red>Wait <gold>30s</gold> between uses!"
         option-unknown-error: "<red>An unknown error occurred. Please try again later."
         on-capacity: "<red>Team has reached the maximum amount of members."
         player:
@@ -76,5 +79,6 @@ broadcast:
       tag-color-changed: "<newline><team_broadcast_prefix><yellow>Team leader has changed the team tag color to <team_tag_color_name><yellow>!<newline>"
       friendly-fire-toggled: "<newline><team_broadcast_prefix><yellow>Team leader has <team_friendly_fire_status><yellow> friendly fire for the team.<newline>"
       chat-toggled: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <team_chat_muted_status><yellow> the team chat.<newline>"
+      home-updated: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <green>updated</green> the team home.<newline>"
       enabled: "<green>enabled"
       disabled: "<red>disabled"

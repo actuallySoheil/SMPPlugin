@@ -30,6 +30,7 @@ public final class TeamCommand extends Command {
         this.subCommands.add(new TeamCreateSubcommand(teamManager));
         this.subCommands.add(new TeamDisbandSubcommand(teamManager));
         this.subCommands.add(new TeamOptionsSubcommand(teamManager, teamOptionsManager));
+        this.subCommands.add(new TeamHomeSubcommand(teamManager));
         this.subCommands.add(new TeamKickMemberSubcommand(teamManager));
         this.subCommands.add(new TeamLeaveSubcommand(teamManager));
         this.subCommands.add(new TeamTransferSubcommand(teamManager));

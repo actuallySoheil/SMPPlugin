@@ -8,6 +8,7 @@ import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
 import me.actuallysoheil.plugin.smp.model.team.status.*;
 import me.actuallysoheil.plugin.smp.utility.TimedHashSet;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,18 +18,22 @@ import java.util.concurrent.TimeUnit;
 
 public final class TeamManager {
 
+    private static final int TEAM_HOME_COOLDOWN_SECONDS = 30;
+
     private final @NotNull HashSet<SMPTeam> teams;
 
     private final @NotNull PluginSettings pluginSettings;
 
     // todo: resume cooldown time on server restart.
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown;
+    private final @NotNull TimedHashSet<UUID> teamHomeCooldown;
 
     public TeamManager(@NotNull PluginSettings pluginSettings) {
         this.pluginSettings = pluginSettings;
         this.teams = new HashSet<>();
 
         this.teamCreationCooldown = new TimedHashSet<>();
+        this.teamHomeCooldown = new TimedHashSet<>();
     }
 
     public @NotNull TeamCreationStatus createTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
@@ -124,6 +129,23 @@ public final class TeamManager {
         );
 
         return TeamLeaveStatus.SUCCESSFUL;
+    }
+
+    public @NotNull TeamHomeTeleportStatus teleportToTeamHome(@NotNull Player player) {
+        val playerId = player.getUniqueId();
+
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) return TeamHomeTeleportStatus.PLAYER_LACKING_TEAM;
+
+        if (this.teamHomeCooldown.contains(playerId)) return TeamHomeTeleportStatus.PLAYER_ON_COOLDOWN;
+
+        val homeLocation = playerTeam.teamOptions().homeLocation();
+        if (homeLocation == null) return TeamHomeTeleportStatus.TEAM_HOME_NOT_EXIST;
+
+        this.teamHomeCooldown.add(playerId, TEAM_HOME_COOLDOWN_SECONDS, TimeUnit.SECONDS);
+        player.teleportAsync(homeLocation);
+
+        return TeamHomeTeleportStatus.SUCCESSFUL;
     }
 
     public @Nullable SMPTeam findTeamByPlayerId(@NotNull UUID playerId) {

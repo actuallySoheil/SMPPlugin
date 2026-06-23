@@ -18,7 +18,6 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 
 import static me.actuallysoheil.plugin.smp.model.language.LanguagePath.*;
 import static me.actuallysoheil.plugin.smp.model.team.status.TeamChangeOptionsStatus.*;
@@ -29,7 +28,7 @@ public final class TeamOptionsSubcommand extends SubExecutor {
     private final @NotNull TeamManager teamManager;
     private final @NotNull TeamOptionsManager teamOptionsManager;
 
-    private final @NotNull Map<String, BiConsumer<SMPTeamOptions, String>> optionSetters;
+    private final @NotNull Map<String, TeamOptionSetter> optionSetters;
     private final @NotNull Map<String, LanguagePath> broadcastMessages;
     private final @NotNull Map<TeamChangeOptionsStatus, LanguagePath> errorMessages;
 
@@ -40,25 +39,28 @@ public final class TeamOptionsSubcommand extends SubExecutor {
         this.teamOptionsManager = teamOptionsManager;
 
         this.optionSetters = Map.ofEntries(
-                Map.entry("tagname", SMPTeamOptions::tagName),
-                Map.entry("tagcolor", (options, value) -> options.tagColor(StringUtility.stringToNamedTextColor(value))),
-                Map.entry("friendlyfire", (options, value) -> options.friendlyFire(Boolean.parseBoolean(value))),
-                Map.entry("chatmuted", (options, value) -> options.chatMuted(Boolean.parseBoolean(value)))
+                Map.entry("tagname", (options, _, value) -> options.tagName(value)),
+                Map.entry("tagcolor", (options, _, value) -> options.tagColor(StringUtility.stringToNamedTextColor(value))),
+                Map.entry("friendlyfire", (options, _, value) -> options.friendlyFire(Boolean.parseBoolean(value))),
+                Map.entry("chatmuted", (options, _, value) -> options.chatMuted(Boolean.parseBoolean(value))),
+                Map.entry("sethome", (options, player, _) -> options.homeLocation(player.getLocation()))
         );
 
         this.broadcastMessages = Map.ofEntries(
                 Map.entry("tagname", BROADCAST_TEAM_OPTION_TAG_NAME_CHANGED),
                 Map.entry("tagcolor", BROADCAST_TEAM_OPTION_TAG_COLOR_CHANGED),
                 Map.entry("friendlyfire", BROADCAST_TEAM_OPTION_FRIENDLY_FIRE_TOGGLED),
-                Map.entry("chatmuted", BROADCAST_TEAM_OPTION_CHAT_TOGGLED)
+                Map.entry("chatmuted", BROADCAST_TEAM_OPTION_CHAT_TOGGLED),
+                Map.entry("sethome", BROADCAST_TEAM_OPTION_HOME_UPDATED)
         );
 
         this.errorMessages = Map.ofEntries(
+                Map.entry(PLAYER_LACKING_TEAM, MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM),
+                Map.entry(PLAYER_NOT_LEADER, MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER),
                 Map.entry(TAG_NAME_INVALID, MESSAGE_COMMAND_ERROR_TEAM_TAG_INVALID),
                 Map.entry(TAG_NAME_LONG, MESSAGE_COMMAND_ERROR_TEAM_TAG_LONG),
                 Map.entry(TAG_COLOR_INVALID, MESSAGE_COMMAND_ERROR_TEAM_TAG_COLOR_INVALID),
-                Map.entry(PLAYER_LACKING_TEAM, MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM),
-                Map.entry(PLAYER_NOT_LEADER, MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER),
+                Map.entry(HOME_LOCATION_UNSAFE, MESSAGE_COMMAND_ERROR_TEAM_HOME_UNSAFE),
                 Map.entry(UNKNOWN_ERROR, MESSAGE_COMMAND_ERROR_TEAM_OPTION_UNKNOWN_ERROR)
         );
     }
@@ -81,7 +83,7 @@ public final class TeamOptionsSubcommand extends SubExecutor {
         val optionSetter = this.optionSetters.get(optionId);
         val status = this.teamOptionsManager.changeTeamOptions(
                 playerId,
-                teamOptions -> optionSetter.accept(teamOptions, optionValue)
+                teamOptions -> optionSetter.apply(teamOptions, player, optionValue)
         );
 
         if (status.equals(SUCCESSFUL)) {
@@ -120,10 +122,14 @@ public final class TeamOptionsSubcommand extends SubExecutor {
             default -> null;
         };
 
-        if (broadcastMessage != null && placeholder != null) playerTeam.sendLocalizedMessage(
-                broadcastMessage,
-                PlaceholderLike.builder().append(placeholder)
-        );
+        if (broadcastMessage != null)
+            if (placeholder != null)
+                playerTeam.sendLocalizedMessage(
+                        broadcastMessage,
+                        PlaceholderLike.builder().append(placeholder)
+                );
+            else
+                playerTeam.sendLocalizedMessage(broadcastMessage);
     }
 
     private void sendUsageMessage(@NotNull Player player) {
@@ -140,6 +146,11 @@ public final class TeamOptionsSubcommand extends SubExecutor {
                                 String.join(separatorFormat, this.optionSetters.keySet())
                         ))
         );
+    }
+
+    @FunctionalInterface
+    private interface TeamOptionSetter {
+        void apply(@NotNull SMPTeamOptions options, @NotNull Player player, @NotNull String value);
     }
 
 }
