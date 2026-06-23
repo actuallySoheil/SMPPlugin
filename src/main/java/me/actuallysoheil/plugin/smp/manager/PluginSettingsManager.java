@@ -42,12 +42,14 @@ public final class PluginSettingsManager {
         val maxTeamIdLength = config.getInt("settings.team.id-max-length", 12);
         val teamCreationCooldownTimeSeconds = config.getInt("settings.team.creation-cooldown-time-seconds", 60);
         val teamInviteExpirationTimeSeconds = config.getInt("settings.team.invite-expiration-time-seconds", 60);
+        val teamHomeTeleportCooldownTimeSeconds = config.getInt("settings.team.home-teleport-cooldown-time-seconds", 30);
         val maxTeamMembers = config.getInt("settings.team.max-members", 6);
 
         this.pluginSettings.allowedTeamIdRegex(allowedTeamIdRegex);
         this.pluginSettings.maxTeamIdLength(maxTeamIdLength);
         this.pluginSettings.teamCreationCooldownTimeSeconds(teamCreationCooldownTimeSeconds);
         this.pluginSettings.teamInviteExpirationTimeSeconds(teamInviteExpirationTimeSeconds);
+        this.pluginSettings.teamHomeTeleportCooldownTimeSeconds(teamHomeTeleportCooldownTimeSeconds);
         this.pluginSettings.maxTeamMember(maxTeamMembers);
     }
 

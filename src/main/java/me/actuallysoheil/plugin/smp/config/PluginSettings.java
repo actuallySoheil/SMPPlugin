@@ -11,6 +11,7 @@ public final class PluginSettings {
     private int maxTeamIdLength;
     private int teamCreationCooldownTimeSeconds;
     private int teamInviteExpirationTimeSeconds;
+    private int teamHomeTeleportCooldownTimeSeconds;
     private int maxTeamMember;
 
 }

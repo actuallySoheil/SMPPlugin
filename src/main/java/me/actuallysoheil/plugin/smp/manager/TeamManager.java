@@ -18,8 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 public final class TeamManager {
 
-    private static final int TEAM_HOME_COOLDOWN_SECONDS = 30;
-
     private final @NotNull HashSet<SMPTeam> teams;
 
     private final @NotNull PluginSettings pluginSettings;
@@ -142,7 +140,7 @@ public final class TeamManager {
         val homeLocation = playerTeam.teamOptions().homeLocation();
         if (homeLocation == null) return TeamHomeTeleportStatus.TEAM_HOME_NOT_EXIST;
 
-        this.teamHomeCooldown.add(playerId, TEAM_HOME_COOLDOWN_SECONDS, TimeUnit.SECONDS);
+        this.teamHomeCooldown.add(playerId, this.pluginSettings.teamHomeTeleportCooldownTimeSeconds(), TimeUnit.SECONDS);
         player.teleportAsync(homeLocation);
 
         return TeamHomeTeleportStatus.SUCCESSFUL;
