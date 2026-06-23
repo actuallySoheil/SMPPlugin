@@ -1,5 +1,6 @@
 package me.actuallysoheil.plugin.smp.model.team;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Accessors(fluent = true)
 @Getter
+@EqualsAndHashCode(of = {"teamId", "teamLeaderId"})
 public final class SMPTeam {
 
     private final @NotNull String teamId;
