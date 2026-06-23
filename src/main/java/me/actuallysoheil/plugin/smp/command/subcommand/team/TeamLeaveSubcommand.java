@@ -20,9 +20,9 @@ public final class TeamLeaveSubcommand extends SubExecutor {
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         switch (this.teamManager.leaveTeam(player.getUniqueId())) {
             case PLAYER_LACKING_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
             case PLAYER_IS_LEADER ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_LEADER_CANNOT_LEAVE);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_LEAVE_ERROR_IS_LEADER);
         }
     }
 

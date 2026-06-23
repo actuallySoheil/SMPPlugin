@@ -29,16 +29,19 @@ public final class TeamCreateSubcommand extends SubExecutor {
         switch (this.teamManager.createTeam(teamId, player.getUniqueId())) {
             case SUCCESSFUL -> SMPMedia.sendMessage(
                     player,
-                    LanguagePath.MESSAGE_COMMAND_TEAM_CREATED,
+                    LanguagePath.MESSAGE_COMMAND_TEAM_CREATION_SUCCESS,
                     PlaceholderLike.builder().append("team_name", teamId)
             );
-            case TEAM_ID_EXISTS -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_EXISTS);
-            case TEAM_ID_INVALID -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NAME_INVALID);
-            case TEAM_ID_LONG -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NAME_LONG);
+            case TEAM_ID_EXISTS ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_CREATION_ERROR_EXISTS);
+            case TEAM_ID_INVALID ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_INVALID);
+            case TEAM_ID_LONG ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_LONG);
             case PLAYER_HAS_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_HAS_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM);
             case PLAYER_TEAM_CREATION_COOLDOWN ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_CREATION_COOLDOWN);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_CREATION_ERROR_ON_COOLDOWN);
         }
     }
 

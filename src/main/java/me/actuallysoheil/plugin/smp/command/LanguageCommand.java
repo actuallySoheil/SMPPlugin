@@ -43,14 +43,14 @@ public final class LanguageCommand extends Command {
         val languageId = arguments[0].toLowerCase();
         val language = this.languageManager.findLanguageById(languageId);
         if (language == null) {
-            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_LANGUAGE_NOT_FOUND);
+            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_LANGUAGE_ERROR_NOT_FOUND);
             return;
         }
 
         if (this.languageManager.updatePlayerLanguage(player.getUniqueId(), language))
             SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_LANGUAGE_PLAYER_UPDATED);
         else
-            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_LANGUAGE_ALREADY_SELECTED);
+            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_LANGUAGE_ERROR_ALREADY_SELECTED);
     }
 
 }

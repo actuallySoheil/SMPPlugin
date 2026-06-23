@@ -5,7 +5,6 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeamOptions;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamChangeOptionsStatus;
-import me.actuallysoheil.plugin.smp.utility.SafeBlockValidator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -54,9 +53,6 @@ public final class TeamOptionsManager {
         if (teamOptions.tagName().length() > this.pluginSettings.maxTeamIdLength())
             return TeamChangeOptionsStatus.TAG_NAME_LONG;
         if (teamOptions.tagColor() == null) return TeamChangeOptionsStatus.TAG_COLOR_INVALID;
-
-        if (teamOptions.homeLocation() != null && !SafeBlockValidator.isSafeBlock(teamOptions.homeLocation()))
-            return TeamChangeOptionsStatus.HOME_LOCATION_UNSAFE;
 
         return TeamChangeOptionsStatus.SUCCESSFUL;
     }

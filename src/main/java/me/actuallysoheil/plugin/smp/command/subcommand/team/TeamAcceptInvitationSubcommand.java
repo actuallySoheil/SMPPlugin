@@ -27,12 +27,15 @@ public final class TeamAcceptInvitationSubcommand extends SubExecutor {
         val teamId = arguments[0].toLowerCase();
         switch (this.teamInvitationManager.acceptInvite(teamId, player.getUniqueId())) {
             case PLAYER_HAS_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_HAS_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM);
             case PLAYER_LACKING_INVITE ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_INVITATION_LACKING);
-            case TEAM_ID_INVALID -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NAME_INVALID);
-            case TEAM_INVALID -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_NOT_EXISTS);
-            case TEAM_ON_CAPACITY -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING);
+            case TEAM_ID_INVALID ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_INVALID);
+            case TEAM_INVALID ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_NOT_EXISTS);
+            case TEAM_ON_CAPACITY ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY);
         }
     }
 

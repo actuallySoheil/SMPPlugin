@@ -62,7 +62,7 @@ public abstract class Command implements BasicCommand {
         if (!(commandSender instanceof Player player)) return;
 
         if (this.permission != null && !player.hasPermission(this.permission)) {
-            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_GENERAL_NO_PERMISSION);
+            SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_GENERAL_ERROR_NO_PERMISSION);
             return;
         }
 
@@ -71,7 +71,7 @@ public abstract class Command implements BasicCommand {
         } catch (@NotNull Exception exception) {
             SMPMedia.sendMessage(
                     player,
-                    LanguagePath.MESSAGE_COMMAND_ERROR_GENERAL_EXCEPTION,
+                    LanguagePath.MESSAGE_COMMAND_GENERAL_ERROR_EXCEPTION,
                     PlaceholderLike.builder().append(Placeholder.of("command_label", this.label))
             );
             PLUGIN.getLogger().log(

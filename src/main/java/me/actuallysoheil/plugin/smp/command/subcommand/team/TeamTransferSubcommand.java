@@ -27,14 +27,15 @@ public final class TeamTransferSubcommand extends SubExecutor {
         val targetPlayerName = arguments[0];
         switch (this.teamManager.transferTeamLeader(player.getUniqueId(), targetPlayerName)) {
             case PLAYER_LACKING_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
             case PLAYER_NOT_LEADER ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER);
             case TARGET_OFFLINE ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_GENERAL_PLAYER_OFFLINE);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_GENERAL_ERROR_PLAYER_OFFLINE);
             case TARGET_NOT_IN_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_LACKING_TEAM);
-            case TARGET_IS_SELF -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_IS_SELF);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_LACKING_TEAM);
+            case TARGET_IS_SELF ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF);
         }
     }
 

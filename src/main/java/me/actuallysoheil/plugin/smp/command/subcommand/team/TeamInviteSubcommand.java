@@ -27,17 +27,19 @@ public final class TeamInviteSubcommand extends SubExecutor {
         val targetPlayerName = arguments[0];
         switch (this.teamInvitationManager.invitePlayer(player.getUniqueId(), targetPlayerName)) {
             case PLAYER_LACKING_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
             case PLAYER_NOT_LEADER ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
-            case TEAM_ON_CAPACITY -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER);
+            case TEAM_ON_CAPACITY ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY);
             case TARGET_OFFLINE ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_GENERAL_PLAYER_OFFLINE);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_GENERAL_ERROR_PLAYER_OFFLINE);
             case TARGET_HAS_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_HAS_TEAM);
-            case TARGET_IS_SELF -> SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_TARGET_IS_SELF);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_HAS_TEAM);
+            case TARGET_IS_SELF ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF);
             case TARGET_ALREADY_INVITED ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_INVITATION_ALREADY_INVITED);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ALREADY_INVITED);
         }
     }
 

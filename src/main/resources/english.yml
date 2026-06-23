@@ -22,43 +22,50 @@ message:
     
     # team command messages
     team:
-      created: "<yellow>Team <green><team_name></green> created successfully."
+      general:
+        error:
+          name:
+            not-exists: "<red>Team by this name doesn't exist!"
+            long: "<red>Team name is too long!"
+            invalid: "<red>Team name can only have characters, numbers and underscores."
+          tag:
+            invalid: "<red>Team tag can only have characters, numbers and underscores."
+            invalid-color: "<red>Team tag color is invalid."
+            long: "<red>Team tag is too long!"
+          player:
+            has-team: "<red>You are already in a team!"
+            lacking-team: "<red>You don't have a team!"
+            not-leader: "<red>Only team leader can do this!"
+          target:
+            is-self: "<red>You cannot do this to yourself!"
+            has-team: "<red>Target is already in another team!"
+            lacking-team: "<red>Target is not in the team!"
+      creation:
+        success: "<yellow>Team <green><team_name></green> created successfully."
+        error:
+          exists: "<red>Team by this name already exists. Use another name."
+          on-cooldown: "<red>You can only create teams every 60 seconds."
       disband:
         confirmation: "<red>To confirm, use <gold>/team disband <teamName></gold> to disband your team."
+        error:
+          invalid-team-name: "<red>Failed to disband the team. Invalid team name."
+      invitation:
+        error:
+          already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
+          lacking: "<red>You don't have an invitation from this team."
+          on-capacity: "<red>Team has reached the maximum amount of members."
+      leave:
+        error:
+          is-leader: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
+      home:
+        error:
+          on-cooldown: "<red>Wait <gold>30s</gold> between uses!"
+          not-exists: "<red>Team home has not been set yet!"
       option:
         usage: "<red>Usage: /team options <option> <value><newLine><red>Available options: <gold><options>"
         usage-separator-format: "<red>, <gold>"
-
-      error:
-        exists: "<red>Team by this name already exists. Use another name."
-        not-exists: "<red>Team by this name doesn't exist!"
-        long-name: "<red>Team name is too long!"
-        long-tag-name: "<red>Team tag is too long!"
-        invalid-name: "<red>Team name can only have characters, numbers and underscores."
-        invalid-tag-name: "<red>Team tag can only have characters, numbers and underscores."
-        invalid-tag-color: "<red>Team tag color is invalid."
-        invalid-color: "<red>Team tag color is invalid."
-        home-unsafe: "<red>Failed to set the team home. Location is unsafe!"
-        home-not-exists: "<red>Team home has not been set yet!"
-        home-on-cooldown: "<red>Wait <gold>30s</gold> between uses!"
-        option-unknown-error: "<red>An unknown error occurred. Please try again later."
-        on-capacity: "<red>Team has reached the maximum amount of members."
-        player:
-          has-team: "<red>You are already in a team!"
-          lacking-team: "<red>You don't have a team!"
-          not-leader: "<red>Only team leader can do this!"
-          on-creation-cooldown: "<red>You can only create teams every 60 seconds."
-        target:
-          is-self: "<red>You cannot do this to yourself!"
-          has-team: "<red>Target is already in another team!"
-          lacking-team: "<red>Target is not in the team!"
-        leader:
-          cannot-leave: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
-        invitation:
-          already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
-          lacking: "<red>You don't have an invitation from this team."
-        disband:
-          invalid-team-name: "<red>Failed to disband the team. Invalid team name."
+        error:
+          unknown: "<red>An unknown error occurred. Please try again later."
 
 broadcast:
   team:

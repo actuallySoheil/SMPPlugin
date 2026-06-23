@@ -20,11 +20,11 @@ public final class TeamHomeSubcommand extends SubExecutor {
     public void execute(@NotNull Player player, @NonNull String[] arguments) {
         switch (this.teamManager.teleportToTeamHome(player)) {
             case PLAYER_LACKING_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
             case PLAYER_ON_COOLDOWN ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_HOME_ON_COOLDOWN);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_HOME_ERROR_ON_COOLDOWN);
             case TEAM_HOME_NOT_EXIST ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_HOME_NOT_EXISTS);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_HOME_ERROR_NOT_EXISTS);
         }
     }
 

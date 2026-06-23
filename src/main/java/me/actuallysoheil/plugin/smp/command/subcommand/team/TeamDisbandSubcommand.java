@@ -27,11 +27,11 @@ public final class TeamDisbandSubcommand extends SubExecutor {
         val teamId = arguments[0];
         switch (this.teamManager.disbandTeam(player.getUniqueId(), teamId)) {
             case PLAYER_LACKING_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM);
             case PLAYER_NOT_LEADER ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_PLAYER_NOT_LEADER);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER);
             case TEAM_NAME_INVALID ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_ERROR_TEAM_DISBAND_INVALID_TEAM_NAME);
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_DISBAND_ERROR_INVALID_TEAM_NAME);
         }
     }
 

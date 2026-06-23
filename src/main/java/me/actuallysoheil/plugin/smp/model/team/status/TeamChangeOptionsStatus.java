@@ -8,7 +8,6 @@ public enum TeamChangeOptionsStatus {
     TAG_NAME_INVALID,
     TAG_NAME_LONG,
     TAG_COLOR_INVALID,
-    HOME_LOCATION_UNSAFE,
     HOME_LOCATION_NULL,
     UNKNOWN_ERROR
 
