@@ -1,7 +1,7 @@
 name: "SMP"
 version: "0.1"
 main: "me.actuallysoheil.plugin.smp.SMPPlugin"
-description: "A simple lightweight PaperMC plugin designed for private SMP servers."
+description: "A lightweight Minecraft PaperMC plugin designed for SMP servers."
 author: "actuallySoheil"
 website: "https://github.com/actuallySoheil/"
 api-version: "26.1.2"
