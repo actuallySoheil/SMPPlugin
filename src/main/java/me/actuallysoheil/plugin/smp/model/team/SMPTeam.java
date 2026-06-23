@@ -6,10 +6,7 @@ import lombok.experimental.Accessors;
 import me.actuallysoheil.plugin.smp.model.audience.SMPAudience;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +20,7 @@ public final class SMPTeam {
 
     private final @NotNull String teamId;
     private final @NotNull HashSet<UUID> teamMembers;
-    private final @NotNull SMPTeamSettings teamSettings;
+    private final @NotNull SMPTeamOptions teamOptions;
     @Setter
     private @NotNull UUID teamLeaderId;
     private SMPAudience teamAudience;
@@ -35,8 +32,8 @@ public final class SMPTeam {
         this.teamMembers = new HashSet<>();
         this.teamMembers.add(teamLeaderId);
 
-        this.teamSettings = new SMPTeamSettings(this);
-        this.teamSettings.tagName(this.teamId);
+        this.teamOptions = new SMPTeamOptions(this);
+        this.teamOptions.tagName(this.teamId);
 
         updateTeamAudience();
     }
@@ -71,18 +68,6 @@ public final class SMPTeam {
     public void sendLocalizedMessage(@NotNull LanguagePath languagePath,
                                      @NotNull PlaceholderLike placeholderLike) {
         this.teamAudience.sendLocalizedMessage(languagePath, placeholderLike);
-    }
-
-    public void playSound(@NotNull Sound sound) {
-        this.teamAudience.playSound(sound);
-    }
-
-    public void showTitle(@NotNull Title title) {
-        this.teamAudience.showTitle(title);
-    }
-
-    public void showBossBar(@NotNull BossBar bossBar) {
-        this.teamAudience.showBossBar(bossBar);
     }
 
     public boolean isTeamMember(@NotNull UUID playerId) {

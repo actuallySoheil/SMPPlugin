@@ -7,10 +7,7 @@ import me.actuallysoheil.plugin.smp.command.LanguageCommand;
 import me.actuallysoheil.plugin.smp.command.SMPCommand;
 import me.actuallysoheil.plugin.smp.command.TeamCommand;
 import me.actuallysoheil.plugin.smp.listener.PlayerListener;
-import me.actuallysoheil.plugin.smp.manager.LanguageManager;
-import me.actuallysoheil.plugin.smp.manager.PluginSettingsManager;
-import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
-import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.manager.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Accessors(fluent = true)
@@ -25,6 +22,7 @@ public final class SMPPlugin extends JavaPlugin {
 
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
+    private TeamOptionsManager teamOptionsManager;
 
     @Override
     public void onEnable() {
@@ -39,6 +37,7 @@ public final class SMPPlugin extends JavaPlugin {
         val pluginSettings = this.pluginSettingsManager.pluginSettings();
         this.teamManager = new TeamManager(pluginSettings);
         this.teamInvitationManager = new TeamInvitationManager(pluginSettings, this.teamManager);
+        this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamManager);
 
         getServer().getPluginManager().registerEvents(
                 new PlayerListener(this.languageManager), this

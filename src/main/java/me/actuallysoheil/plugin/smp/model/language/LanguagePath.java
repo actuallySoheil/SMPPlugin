@@ -26,11 +26,17 @@ public enum LanguagePath {
     // Team
     MESSAGE_COMMAND_TEAM_CREATED("message.command.team.created"),
     MESSAGE_COMMAND_TEAM_DISBAND_CONFIRMATION("message.command.team.disband.confirmation"),
+    MESSAGE_COMMAND_TEAM_OPTIONS_USAGE("message.command.team.option.usage"),
+    MESSAGE_COMMAND_TEAM_OPTIONS_USAGE_SEPARATOR_FORMAT("message.command.team.option.usage-separator-format"),
     MESSAGE_COMMAND_ERROR_TEAM_DISBAND_INVALID_TEAM_NAME("message.command.team.error.disband.invalid-team-name"),
     MESSAGE_COMMAND_ERROR_TEAM_EXISTS("message.command.team.error.exists"),
     MESSAGE_COMMAND_ERROR_TEAM_NOT_EXISTS("message.command.team.error.not-exists"),
     MESSAGE_COMMAND_ERROR_TEAM_NAME_LONG("message.command.team.error.long-name"),
     MESSAGE_COMMAND_ERROR_TEAM_NAME_INVALID("message.command.team.error.invalid-name"),
+    MESSAGE_COMMAND_ERROR_TEAM_TAG_LONG("message.command.team.error.long-tag-name"),
+    MESSAGE_COMMAND_ERROR_TEAM_TAG_INVALID("message.command.team.error.invalid-tag-name"),
+    MESSAGE_COMMAND_ERROR_TEAM_TAG_COLOR_INVALID("message.command.team.error.invalid-tag-color"),
+    MESSAGE_COMMAND_ERROR_TEAM_OPTION_UNKNOWN_ERROR("message.command.team.error.option-unknown-error"),
     MESSAGE_COMMAND_ERROR_TEAM_ON_CAPACITY("message.command.team.error.on-capacity"),
     MESSAGE_COMMAND_ERROR_TEAM_PLAYER_HAS_TEAM("message.command.team.error.player.has-team"),
     MESSAGE_COMMAND_ERROR_TEAM_PLAYER_LACKING_TEAM("message.command.team.error.player.lacking-team"),
@@ -54,7 +60,15 @@ public enum LanguagePath {
     BROADCAST_TEAM_INVITATION_MEMBERS("broadcast.team.invitation.members"),
     BROADCAST_TEAM_INVITATION_TARGET("broadcast.team.invitation.target"),
     BROADCAST_TEAM_INVITATION_EXPIRED("broadcast.team.invitation.expired"),
-    BROADCAST_TEAM_INVITATION_EXPIRED_TARGET("broadcast.team.invitation.expired-target");
+    BROADCAST_TEAM_INVITATION_EXPIRED_TARGET("broadcast.team.invitation.expired-target"),
+    BROADCAST_TEAM_OPTION_TAG_NAME_CHANGED("broadcast.team.option.tag-name-changed"),
+    BROADCAST_TEAM_OPTION_TAG_COLOR_CHANGED("broadcast.team.option.tag-color-changed"),
+    BROADCAST_TEAM_OPTION_FRIENDLY_FIRE_TOGGLED("broadcast.team.option.friendly-fire-toggled"),
+    BROADCAST_TEAM_OPTION_CHAT_TOGGLED("broadcast.team.option.chat-toggled"),
+    BROADCAST_TEAM_OPTION_ENABLED("broadcast.team.option.enabled"),
+    BROADCAST_TEAM_OPTION_DISABLED("broadcast.team.option.disabled"),
+
+    ;
 
     private final @NotNull String languagePath;
 

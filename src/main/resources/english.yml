@@ -25,11 +25,20 @@ message:
       created: "<yellow>Team <green><team_name></green> created successfully."
       disband:
         confirmation: "<red>To confirm, use <gold>/team disband <teamName></gold> to disband your team."
+      option:
+        usage: "<red>Usage: /team options <option> <value><newLine><red>Available options: <gold><options>"
+        usage-separator-format: "<red>, <gold>"
+
       error:
         exists: "<red>Team by this name already exists. Use another name."
         not-exists: "<red>Team by this name doesn't exist!"
         long-name: "<red>Team name is too long!"
+        long-tag-name: "<red>Team tag is too long!"
         invalid-name: "<red>Team name can only have characters, numbers and underscores."
+        invalid-tag-name: "<red>Team tag can only have characters, numbers and underscores."
+        invalid-tag-color: "<red>Team tag color is invalid."
+        invalid-color: "<red>Team tag color is invalid."
+        option-unknown-error: "<red>An unknown error occurred. Please try again later."
         on-capacity: "<red>Team has reached the maximum amount of members."
         player:
           has-team: "<red>You are already in a team!"
@@ -40,13 +49,13 @@ message:
           is-self: "<red>You cannot do this to yourself!"
           has-team: "<red>Target is already in another team!"
           lacking-team: "<red>Target is not in the team!"
+        leader:
+          cannot-leave: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
         invitation:
           already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
           lacking: "<red>You don't have an invitation from this team."
         disband:
           invalid-team-name: "<red>Failed to disband the team. Invalid team name."
-        leader:
-          cannot-leave: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
 
 broadcast:
   team:
@@ -62,3 +71,10 @@ broadcast:
       target: "<newline><yellow><aqua><team_leader_name></aqua> has invited you to join their team!<newline>You have <red>60</red> seconds to accept. <gold><hover:show_text:'<gold>Click to accept'><click:run_command:'/team accept <team_id>'><gold>Click here to join!</click><newline>"
       expired: "<red>Your team request with <yellow><target_name></yellow> has expired."
       expired-target: "<red>Your invitation from <yellow><team_leader_name></yellow> has expired."
+    option:
+      tag-name-changed: "<newline><team_broadcast_prefix><yellow>Team leader has changed the team tag name to <team_tag_name><yellow>!<newline>"
+      tag-color-changed: "<newline><team_broadcast_prefix><yellow>Team leader has changed the team tag color to <team_tag_color_name><yellow>!<newline>"
+      friendly-fire-toggled: "<newline><team_broadcast_prefix><yellow>Team leader has <team_friendly_fire_status><yellow> friendly fire for the team.<newline>"
+      chat-toggled: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <team_chat_muted_status><yellow> the team chat.<newline>"
+      enabled: "<green>enabled"
+      disabled: "<red>disabled"
