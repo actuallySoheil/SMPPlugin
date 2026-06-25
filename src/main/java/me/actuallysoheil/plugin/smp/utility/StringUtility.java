@@ -18,7 +18,7 @@ public final class StringUtility {
                 .collect(Collectors.joining(" "));
     }
 
-    public static @Nullable NamedTextColor stringToNamedTextColor(@NotNull String color) {
+    public @Nullable NamedTextColor stringToNamedTextColor(@NotNull String color) {
         return NamedTextColor.NAMES.value(color.toLowerCase());
     }
 
