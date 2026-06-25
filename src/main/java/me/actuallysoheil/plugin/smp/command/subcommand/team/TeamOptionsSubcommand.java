@@ -16,14 +16,24 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static me.actuallysoheil.plugin.smp.model.language.LanguagePath.*;
 import static me.actuallysoheil.plugin.smp.model.team.status.TeamChangeOptionsStatus.*;
 
 @SubCommand(label = "options", description = "Adjust team options.")
 public final class TeamOptionsSubcommand extends SubExecutor {
+
+    private static final @NotNull List<String> TAG_COLORS = List.of(
+            "dark_blue", "dark_green", "dark_aqua",
+            "dark_red", "dark_purple", "dark_gray",
+            "light_purple", "gold", "gray", "blue", "green",
+            "aqua", "red", "yellow", "white", "black"
+    );
 
     private final @NotNull TeamManager teamManager;
     private final @NotNull TeamOptionsManager teamOptionsManager;
@@ -92,6 +102,35 @@ public final class TeamOptionsSubcommand extends SubExecutor {
 
         val errorMessage = this.errorMessages.get(status);
         if (errorMessage != null) SMPMedia.sendMessage(player, errorMessage);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    @Override
+    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+        val playerId = player.getUniqueId();
+        val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
+        if (playerTeam == null) return List.of();
+
+        if (arguments.length == 1) {
+            return playerTeam.isTeamLeader(playerId) ?
+                    Stream.of("tagName", "tagColor", "friendlyFire", "chatMuted", "setHome")
+                            .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
+                            .toList() :
+                    List.of();
+        }
+
+        if (arguments.length == 2) {
+            return switch (arguments[0].toLowerCase()) {
+                case "tagcolor" -> TAG_COLORS.stream()
+                        .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
+                        .toList();
+                case "friendlyfire", "chatmuted" -> List.of("true", "false");
+                case "sethome" -> List.of("my-location");
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
     @SuppressWarnings("SpellCheckingInspection")

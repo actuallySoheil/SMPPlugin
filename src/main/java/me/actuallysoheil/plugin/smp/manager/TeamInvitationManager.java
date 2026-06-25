@@ -13,9 +13,11 @@ import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class TeamInvitationManager {
 
@@ -139,6 +141,14 @@ public final class TeamInvitationManager {
 
     private @NotNull HashSet<UUID> pendingTeamInvites(@NotNull SMPTeam team) {
         return this.pendingTeamInvites.computeIfAbsent(team, _ -> new HashSet<>());
+    }
+
+    public @NotNull Collection<String> pendingTeamNamesByPlayerId(@NotNull UUID playerId) {
+        return this.pendingTeamInvites.keySet().stream()
+                .filter(this.pendingTeamInvites::containsKey)
+                .filter(team -> this.pendingTeamInvites.get(team).contains(playerId))
+                .map(SMPTeam::teamId)
+                .collect(Collectors.toList());
     }
 
 }

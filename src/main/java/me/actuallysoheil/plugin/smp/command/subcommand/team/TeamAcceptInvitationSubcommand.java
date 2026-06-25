@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
+import java.util.Collection;
+import java.util.List;
+
 @RequiredArgsConstructor
 @SubCommand(label = "accept", description = "Accept a team invitation.")
 public final class TeamAcceptInvitationSubcommand extends SubExecutor {
@@ -37,6 +40,12 @@ public final class TeamAcceptInvitationSubcommand extends SubExecutor {
             case TEAM_ON_CAPACITY ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY);
         }
+    }
+
+    @Override
+    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+        if (arguments.length == 1) return this.teamInvitationManager.pendingTeamNamesByPlayerId(player.getUniqueId());
+        return List.of();
     }
 
 }

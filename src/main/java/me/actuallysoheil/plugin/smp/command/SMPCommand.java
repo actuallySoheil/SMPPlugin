@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public final class SMPCommand extends Command {
@@ -57,6 +58,29 @@ public final class SMPCommand extends Command {
         }
 
         player.sendRichMessage(this.helpMessage);
+    }
+
+    @Override
+    public Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+        if (arguments.length == 0) return this.subCommands.stream()
+                .map(SubExecutor::label)
+                .toList();
+
+        if (arguments.length == 1) return this.subCommands.stream().map(SubExecutor::label)
+                .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
+                .toList();
+
+        for (val subExecutor : this.subCommands) {
+            if (!arguments[0].equalsIgnoreCase(subExecutor.label())) continue;
+            return subExecutor.completions(
+                    player,
+                    Arrays.stream(arguments)
+                            .skip(1)
+                            .toArray(String[]::new)
+            );
+        }
+
+        return List.of();
     }
 
 }

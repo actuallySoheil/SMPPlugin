@@ -5,16 +5,22 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
+import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
+
+import java.util.Collection;
+import java.util.List;
 
 @RequiredArgsConstructor
 @SubCommand(label = "invite", description = "Invite a player.")
 public final class TeamInviteSubcommand extends SubExecutor {
 
+    private final @NotNull TeamManager teamManager;
     private final @NotNull TeamInvitationManager teamInvitationManager;
 
     @Override
@@ -41,6 +47,18 @@ public final class TeamInviteSubcommand extends SubExecutor {
             case TARGET_ALREADY_INVITED ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ALREADY_INVITED);
         }
+    }
+
+    @Override
+    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+        if (arguments.length == 1) {
+            return Bukkit.getOnlinePlayers().stream()
+                    .filter(onlinePlayer -> this.teamManager.findTeamByPlayerId(onlinePlayer.getUniqueId()) == null)
+                    .map(Player::getName)
+                    .toList();
+        }
+
+        return List.of();
     }
 
 }

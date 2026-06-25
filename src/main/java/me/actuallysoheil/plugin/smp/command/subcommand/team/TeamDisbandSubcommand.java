@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
+import java.util.Collection;
+import java.util.List;
+
 @RequiredArgsConstructor
 @SubCommand(label = "disband", description = "Disband your team.")
 public final class TeamDisbandSubcommand extends SubExecutor {
@@ -33,6 +36,18 @@ public final class TeamDisbandSubcommand extends SubExecutor {
             case TEAM_NAME_INVALID ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_DISBAND_ERROR_INVALID_TEAM_NAME);
         }
+    }
+
+    @Override
+    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+        if (arguments.length == 1) {
+            val playerTeam = this.teamManager.findTeamByPlayerId(player.getUniqueId());
+            if (playerTeam == null) return List.of();
+
+            return List.of(playerTeam.teamId());
+        }
+
+        return List.of();
     }
 
 }
