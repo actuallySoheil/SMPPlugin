@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
@@ -14,11 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @SubCommand(label = "invite", description = "Invite a player.")
-public final class TeamInviteSubcommand extends SubExecutor {
+public final class TeamInviteSubcommand extends SubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
     private final @NotNull TeamInvitationManager teamInvitationManager;
@@ -50,15 +50,20 @@ public final class TeamInviteSubcommand extends SubExecutor {
     }
 
     @Override
-    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+    public @NotNull Collection<String> suggest(@NotNull Player player, @NotNull String[] arguments) {
         if (arguments.length == 1) {
-            return Bukkit.getOnlinePlayers().stream()
-                    .filter(onlinePlayer -> this.teamManager.findTeamByPlayerId(onlinePlayer.getUniqueId()) == null)
-                    .map(Player::getName)
-                    .toList();
+            return suggestWithStartingPrefix(
+                    Bukkit.getOnlinePlayers().stream()
+                            .filter(onlinePlayer -> this.teamManager
+                                    .findTeamByPlayerId(onlinePlayer.getUniqueId()) == null
+                            )
+                            .map(Player::getName)
+                            .toList(),
+                    arguments
+            );
         }
 
-        return List.of();
+        return Collections.emptyList();
     }
 
 }

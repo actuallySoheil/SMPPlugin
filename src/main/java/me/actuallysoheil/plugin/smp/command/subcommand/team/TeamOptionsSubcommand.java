@@ -2,7 +2,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.manager.TeamOptionsManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
@@ -16,17 +16,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.*;
 
 import static me.actuallysoheil.plugin.smp.model.language.LanguagePath.*;
 import static me.actuallysoheil.plugin.smp.model.team.status.TeamChangeOptionsStatus.*;
 
 @SubCommand(label = "options", description = "Adjust team options.")
-public final class TeamOptionsSubcommand extends SubExecutor {
+public final class TeamOptionsSubcommand extends SubCommandHandler {
 
     private static final @NotNull List<String> TAG_COLORS = List.of(
             "dark_blue", "dark_green", "dark_aqua",
@@ -106,31 +102,30 @@ public final class TeamOptionsSubcommand extends SubExecutor {
 
     @SuppressWarnings("SpellCheckingInspection")
     @Override
-    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+    public @NotNull Collection<String> suggest(@NotNull Player player, @NotNull String[] arguments) {
         val playerId = player.getUniqueId();
         val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
-        if (playerTeam == null) return List.of();
+        if (playerTeam == null) return Collections.emptyList();
 
         if (arguments.length == 1) {
             return playerTeam.isTeamLeader(playerId) ?
-                    Stream.of("tagName", "tagColor", "friendlyFire", "chatMuted", "setHome")
-                            .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
-                            .toList() :
-                    List.of();
+                    suggestWithStartingPrefix(
+                            List.of("tagName", "tagColor", "friendlyFire", "chatMuted", "setHome"),
+                            arguments
+                    ) :
+                    Collections.emptyList();
         }
 
         if (arguments.length == 2) {
             return switch (arguments[0].toLowerCase()) {
-                case "tagcolor" -> TAG_COLORS.stream()
-                        .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
-                        .toList();
-                case "friendlyfire", "chatmuted" -> List.of("true", "false");
-                case "sethome" -> List.of("my-location");
-                default -> List.of();
+                case "tagcolor" -> suggestWithStartingPrefix(TAG_COLORS, arguments);
+                case "friendlyfire", "chatmuted" -> suggestWithStartingPrefix(List.of("true", "false"), arguments);
+                case "sethome" -> suggestWithStartingPrefix(List.of("my-location"), arguments);
+                default -> Collections.emptyList();
             };
         }
 
-        return List.of();
+        return Collections.emptyList();
     }
 
     @SuppressWarnings("SpellCheckingInspection")

@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
@@ -14,12 +14,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @SubCommand(label = "transfer", description = "Change the team leadership.")
-public final class TeamTransferSubcommand extends SubExecutor {
+public final class TeamTransferSubcommand extends SubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 
@@ -46,21 +46,24 @@ public final class TeamTransferSubcommand extends SubExecutor {
     }
 
     @Override
-    public @NotNull Collection<String> completions(@NotNull Player player, @NonNull @NotNull String[] arguments) {
+    public @NotNull Collection<String> suggest(@NotNull Player player, @NonNull @NotNull String[] arguments) {
         if (arguments.length == 1) {
             val playerId = player.getUniqueId();
             val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
-            if (playerTeam == null || !playerTeam.isTeamLeader(playerId)) return List.of();
+            if (playerTeam == null || !playerTeam.isTeamLeader(playerId)) return Collections.emptyList();
 
-            return playerTeam.teamMembers().stream()
-                    .filter(memberId -> !memberId.equals(playerTeam.teamLeaderId()))
-                    .map(Bukkit::getOfflinePlayer)
-                    .map(OfflinePlayer::getName)
-                    .filter(Objects::nonNull)
-                    .toList();
+            return suggestWithStartingPrefix(
+                    playerTeam.teamMembers().stream()
+                            .filter(memberId -> !memberId.equals(playerTeam.teamLeaderId()))
+                            .map(Bukkit::getOfflinePlayer)
+                            .map(OfflinePlayer::getName)
+                            .filter(Objects::nonNull)
+                            .toList(),
+                    arguments
+            );
         }
 
-        return List.of();
+        return Collections.emptyList();
     }
 
 }

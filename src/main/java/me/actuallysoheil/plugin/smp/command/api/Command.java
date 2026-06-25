@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @Accessors(fluent = true)
 public abstract class Command implements BasicCommand {
@@ -90,11 +91,21 @@ public abstract class Command implements BasicCommand {
     @Override
     public @NonNull Collection<String> suggest(@NonNull CommandSourceStack commandSourceStack, String @NonNull [] args) {
         if (!(commandSourceStack.getExecutor() instanceof Player player)) return Collections.emptyList();
-        return completions(player, args);
+        return suggest(player, args);
     }
 
     public abstract void execute(@NotNull Player player, @NotNull String[] arguments);
 
-    public abstract Collection<String> completions(@NotNull Player player, @NotNull String[] arguments);
+    public abstract @NotNull Collection<String> suggest(@NotNull Player player, @NotNull String[] arguments);
+
+    public @NotNull Collection<String> suggestWithStartingPrefix(@NotNull List<String> strings,
+                                                                 @NotNull String[] arguments) {
+        if (arguments.length == 0) return strings;
+
+        val lastArgument = arguments[arguments.length - 1].toLowerCase();
+        return strings.stream()
+                .filter(text -> text.startsWith(lastArgument))
+                .collect(Collectors.toList());
+    }
 
 }

@@ -2,7 +2,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 
 import lombok.RequiredArgsConstructor;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
@@ -12,7 +12,7 @@ import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @SubCommand(label = "leave", description = "Leave the team.")
-public final class TeamLeaveSubcommand extends SubExecutor {
+public final class TeamLeaveSubcommand extends SubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

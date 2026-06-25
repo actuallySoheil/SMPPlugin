@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamInvitationManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
@@ -12,11 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @SubCommand(label = "accept", description = "Accept a team invitation.")
-public final class TeamAcceptInvitationSubcommand extends SubExecutor {
+public final class TeamAcceptInvitationSubcommand extends SubCommandHandler {
 
     private final @NotNull TeamInvitationManager teamInvitationManager;
 
@@ -43,9 +43,12 @@ public final class TeamAcceptInvitationSubcommand extends SubExecutor {
     }
 
     @Override
-    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
-        if (arguments.length == 1) return this.teamInvitationManager.pendingTeamNamesByPlayerId(player.getUniqueId());
-        return List.of();
+    public @NotNull Collection<String> suggest(@NotNull Player player, @NotNull String[] arguments) {
+        if (arguments.length == 1) return suggestWithStartingPrefix(
+                this.teamInvitationManager.pendingTeamNamesByPlayerId(player.getUniqueId()),
+                arguments
+        );
+        return Collections.emptyList();
     }
 
 }

@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
@@ -14,7 +14,7 @@ import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor
 @SubCommand(label = "create", description = "Create a team.")
-public final class TeamCreateSubcommand extends SubExecutor {
+public final class TeamCreateSubcommand extends SubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 

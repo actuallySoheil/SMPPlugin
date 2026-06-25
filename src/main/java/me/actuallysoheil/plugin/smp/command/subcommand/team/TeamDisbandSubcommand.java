@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
-import me.actuallysoheil.plugin.smp.command.api.SubExecutor;
+import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
@@ -12,11 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
 @SubCommand(label = "disband", description = "Disband your team.")
-public final class TeamDisbandSubcommand extends SubExecutor {
+public final class TeamDisbandSubcommand extends SubCommandHandler {
 
     private final @NotNull TeamManager teamManager;
 
@@ -39,15 +40,15 @@ public final class TeamDisbandSubcommand extends SubExecutor {
     }
 
     @Override
-    public @NotNull Collection<String> completions(@NotNull Player player, @NotNull String[] arguments) {
+    public @NotNull Collection<String> suggest(@NotNull Player player, @NotNull String[] arguments) {
         if (arguments.length == 1) {
             val playerTeam = this.teamManager.findTeamByPlayerId(player.getUniqueId());
-            if (playerTeam == null) return List.of();
+            if (playerTeam == null) return Collections.emptyList();
 
             return List.of(playerTeam.teamId());
         }
 
-        return List.of();
+        return Collections.emptyList();
     }
 
 }

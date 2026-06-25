@@ -60,15 +60,15 @@ public final class LanguageCommand extends Command {
     }
 
     @Override
-    public Collection<String> completions(@NotNull Player player, @NonNull @NotNull String[] arguments) {
+    public @NonNull Collection<String> suggest(@NotNull Player player, @NonNull @NotNull String[] arguments) {
         val languageIds = this.languageManager.languages().stream()
                 .map(Language::id)
                 .toList();
-        if (arguments.length == 0) return languageIds;
-        if (arguments.length == 1) return languageIds.stream()
-                .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
-                .toList();
-        return List.of();
+        return switch (arguments.length) {
+            case 0 -> languageIds;
+            case 1 -> suggestWithStartingPrefix(languageIds, arguments);
+            default -> List.of();
+        };
     }
 
 }
