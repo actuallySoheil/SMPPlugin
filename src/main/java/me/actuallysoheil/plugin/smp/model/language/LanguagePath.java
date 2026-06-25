@@ -27,9 +27,9 @@ public enum LanguagePath {
 
     // --- General ---
     // Name
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_NOT_EXISTS("message.command.team.error.not-exists"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_LONG("message.command.team.error.long-name"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_INVALID("message.command.team.error.invalid-name"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_NOT_EXISTS("message.command.team.general.error.name.not-exists"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_LONG("message.command.team.general.error.name.long"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_NAME_INVALID("message.command.team.general.error.name.invalid"),
 
     // Tags
     MESSAGE_COMMAND_TEAM_GENERAL_TAG_ERROR_INVALID_NAME("message.command.team.general.error.tag.invalid"),
@@ -37,14 +37,14 @@ public enum LanguagePath {
     MESSAGE_COMMAND_TEAM_GENERAL_TAG_ERROR_LONG("message.command.team.general.error.tag.long"),
 
     // Player
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM("message.command.team.error.player.has-team"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM("message.command.team.error.player.lacking-team"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER("message.command.team.error.player.not-leader"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM("message.command.team.general.error.player.has-team"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_LACKING_TEAM("message.command.team.general.error.player.lacking-team"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_NOT_LEADER("message.command.team.general.error.player.not-leader"),
 
     // Target
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF("message.command.team.error.target.is-self"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_HAS_TEAM("message.command.team.error.target.has-team"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_LACKING_TEAM("message.command.team.error.target.lacking-team"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF("message.command.team.general.error.target.is-self"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_HAS_TEAM("message.command.team.general.error.target.has-team"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_LACKING_TEAM("message.command.team.general.error.target.lacking-team"),
 
     // --- Creation ---
     MESSAGE_COMMAND_TEAM_CREATION_SUCCESS("message.command.team.creation.success"),
