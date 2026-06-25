@@ -146,6 +146,10 @@ public final class TeamManager {
         return TeamHomeTeleportStatus.SUCCESSFUL;
     }
 
+    public void unloadTeams() {
+        this.teams.clear();
+    }
+
     public @Nullable SMPTeam findTeamByPlayerId(@NotNull UUID playerId) {
         return this.teams.stream()
                 .filter(team -> team.isTeamMember(playerId))

@@ -49,6 +49,9 @@ public final class SMPPlugin extends JavaPlugin {
     public void onDisable() {
         instance = null;
 
+        this.teamInvitationManager.removeActivePendingInvites();
+        this.teamManager.unloadTeams();
+
         this.languageManager.unloadLanguages();
     }
 

@@ -139,6 +139,10 @@ public final class TeamInvitationManager {
         return TeamAcceptInvitationStatus.SUCCESSFUL;
     }
 
+    public void removeActivePendingInvites() {
+        this.pendingTeamInvites.clear();
+    }
+
     private @NotNull HashSet<UUID> pendingTeamInvites(@NotNull SMPTeam team) {
         return this.pendingTeamInvites.computeIfAbsent(team, _ -> new HashSet<>());
     }
