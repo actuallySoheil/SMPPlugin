@@ -19,15 +19,9 @@ public final class LanguageCommand extends Command {
 
     private final @NotNull LanguageManager languageManager;
 
-    private final @NotNull List<String> cachedLanguageIds;
-
     public LanguageCommand(@NotNull LanguageManager languageManager) {
         super("language");
         this.languageManager = languageManager;
-
-        this.cachedLanguageIds = this.languageManager.languages().stream()
-                .map(Language::id)
-                .toList();
     }
 
     @Override
@@ -37,13 +31,16 @@ public final class LanguageCommand extends Command {
                     player.getUniqueId(),
                     LanguagePath.MESSAGE_COMMAND_LANGUAGE_USAGE_SEPARATOR_FORMAT
             ).asText();
+            val languageIds = this.languageManager.languages().stream()
+                    .map(Language::id)
+                    .toList();
             SMPMedia.sendMessage(
                     player,
                     LanguagePath.MESSAGE_COMMAND_LANGUAGE_USAGE,
                     PlaceholderLike.builder()
                             .append(Placeholder.of(
                                     "languages",
-                                    String.join(separatorFormat, this.cachedLanguageIds)
+                                    String.join(separatorFormat, languageIds)
                             ))
             );
             return;
@@ -64,8 +61,11 @@ public final class LanguageCommand extends Command {
 
     @Override
     public Collection<String> completions(@NotNull Player player, @NonNull @NotNull String[] arguments) {
-        if (arguments.length == 0) return this.cachedLanguageIds;
-        if (arguments.length == 1) return this.cachedLanguageIds.stream()
+        val languageIds = this.languageManager.languages().stream()
+                .map(Language::id)
+                .toList();
+        if (arguments.length == 0) return languageIds;
+        if (arguments.length == 1) return languageIds.stream()
                 .filter(name -> name.toLowerCase().startsWith(arguments[arguments.length - 1].toLowerCase()))
                 .toList();
         return List.of();
