@@ -49,7 +49,8 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
                 Map.entry("tagcolor", (options, _, value) -> options.tagColor(StringUtility.stringToNamedTextColor(value))),
                 Map.entry("friendlyfire", (options, _, value) -> options.friendlyFire(Boolean.parseBoolean(value))),
                 Map.entry("chatmuted", (options, _, value) -> options.chatMuted(Boolean.parseBoolean(value))),
-                Map.entry("sethome", (options, player, _) -> options.homeLocation(player.getLocation()))
+                Map.entry("sethome", (options, player, value) ->
+                        options.homeLocation(value.equalsIgnoreCase("remove") ? null : player.getLocation()))
         );
 
         this.broadcastMessages = Map.ofEntries(
@@ -120,7 +121,7 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
             return switch (arguments[0].toLowerCase()) {
                 case "tagcolor" -> suggestWithStartingPrefix(TAG_COLORS, arguments);
                 case "friendlyfire", "chatmuted" -> suggestWithStartingPrefix(List.of("true", "false"), arguments);
-                case "sethome" -> suggestWithStartingPrefix(List.of("my-location"), arguments);
+                case "sethome" -> suggestWithStartingPrefix(List.of("my-location", "remove"), arguments);
                 default -> Collections.emptyList();
             };
         }
