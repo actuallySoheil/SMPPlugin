@@ -21,7 +21,7 @@ public final class SMPTeamOptions {
     private transient @Nullable SMPTeam smpTeam;
 
     private @NotNull String tagName = "";
-    private @UnknownNullability NamedTextColor tagColor = NamedTextColor.DARK_GRAY;
+    private @UnknownNullability NamedTextColor tagColor = NamedTextColor.GRAY;
 
     private boolean friendlyFire;
     private boolean chatMuted;
