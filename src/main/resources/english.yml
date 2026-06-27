@@ -38,7 +38,8 @@ message:
             not-leader: "<red>Only team leader can do this!"
           target:
             is-self: "<red>You cannot do this to yourself!"
-            has-team: "<red>Target is already in another team!"
+            is-in-team: "<red>Target is already in the team!"
+            is-in-another-team: "<red>Target is in another team!"
             lacking-team: "<red>Target is not in the team!"
       creation:
         success: "<yellow>Team <green><team_name></green> created successfully."

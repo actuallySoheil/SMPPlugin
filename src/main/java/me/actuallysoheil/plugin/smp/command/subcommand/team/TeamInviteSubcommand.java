@@ -40,8 +40,10 @@ public final class TeamInviteSubcommand extends SubCommandHandler {
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY);
             case TARGET_OFFLINE ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_GENERAL_ERROR_PLAYER_OFFLINE);
-            case TARGET_HAS_TEAM ->
-                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_HAS_TEAM);
+            case TARGET_IS_IN_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_IN_TEAM);
+            case TARGET_IS_IN_ANOTHER_TEAM ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_IN_ANOTHER_TEAM);
             case TARGET_IS_SELF ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF);
             case TARGET_ALREADY_INVITED ->

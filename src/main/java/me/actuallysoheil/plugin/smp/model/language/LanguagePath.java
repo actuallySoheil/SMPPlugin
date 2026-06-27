@@ -43,7 +43,8 @@ public enum LanguagePath {
 
     // Target
     MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF("message.command.team.general.error.target.is-self"),
-    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_HAS_TEAM("message.command.team.general.error.target.has-team"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_IN_TEAM("message.command.team.general.error.target.is-in-team"),
+    MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_IN_ANOTHER_TEAM("message.command.team.general.error.target.is-in-another-team"),
     MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_LACKING_TEAM("message.command.team.general.error.target.lacking-team"),
 
     // --- Creation ---

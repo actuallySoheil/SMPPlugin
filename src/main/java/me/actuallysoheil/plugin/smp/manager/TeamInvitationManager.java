@@ -55,7 +55,10 @@ public final class TeamInvitationManager {
         val targetUsername = targetPlayer.getName();
 
         val targetTeam = this.teamManager.findTeamByPlayerId(targetId);
-        if (targetTeam != null) return TeamInvitationStatus.TARGET_HAS_TEAM;
+        if (targetTeam != null) {
+            if (targetTeam.equals(playerTeam)) return TeamInvitationStatus.TARGET_IS_IN_TEAM;
+            return TeamInvitationStatus.TARGET_IS_IN_ANOTHER_TEAM;
+        }
 
         val targetIsAlreadyInvited = pendingTeamInvites(playerTeam).contains(targetId);
         if (targetIsAlreadyInvited) return TeamInvitationStatus.TARGET_ALREADY_INVITED;
