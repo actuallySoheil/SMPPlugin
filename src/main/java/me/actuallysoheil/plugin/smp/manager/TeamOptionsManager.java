@@ -3,6 +3,7 @@ package me.actuallysoheil.plugin.smp.manager;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
+import me.actuallysoheil.plugin.smp.database.dao.TeamOptionsDao;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeamOptions;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamChangeOptionsStatus;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ public final class TeamOptionsManager {
 
     private final @NotNull PluginSettings pluginSettings;
     private final @NotNull TeamManager teamManager;
+    private final @NotNull TeamOptionsDao teamOptionsDao;
 
     public @NotNull TeamChangeOptionsStatus changeTeamOptions(@NotNull UUID playerId,
                                                               @NotNull SMPTeamOptions.Builder optionsBuilder) {
@@ -43,6 +45,8 @@ public final class TeamOptionsManager {
         currentOptions.tagColor(testOptions.tagColor());
         currentOptions.friendlyFire(testOptions.friendlyFire());
         currentOptions.chatMuted(testOptions.chatMuted());
+
+        this.teamOptionsDao.update(currentOptions);
 
         return TeamChangeOptionsStatus.SUCCESSFUL;
     }

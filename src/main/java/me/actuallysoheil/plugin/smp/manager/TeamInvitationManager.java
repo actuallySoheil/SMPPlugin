@@ -3,6 +3,7 @@ package me.actuallysoheil.plugin.smp.manager;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
+import me.actuallysoheil.plugin.smp.database.dao.TeamDao;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
@@ -22,15 +23,18 @@ import java.util.stream.Collectors;
 public final class TeamInvitationManager {
 
     private final @NotNull PluginSettings pluginSettings;
+    private final @NotNull TeamDao teamDao;
 
     private final @NotNull TeamManager teamManager;
     private final @NotNull HashMap<SMPTeam, HashSet<UUID>> pendingTeamInvites;
 
     public TeamInvitationManager(@NotNull PluginSettings pluginSettings,
+                                 @NotNull TeamDao teamDao,
                                  @NotNull TeamManager teamManager) {
         this.pluginSettings = pluginSettings;
-
+        this.teamDao = teamDao;
         this.teamManager = teamManager;
+
         this.pendingTeamInvites = new HashMap<>();
     }
 
@@ -88,6 +92,7 @@ public final class TeamInvitationManager {
                             LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_JOIN,
                             PlaceholderLike.builder().append("member_name", targetUsername)
                     );
+                    this.teamDao.update(playerTeam);
                 },
                 () -> {
                     pendingTeamInvites(playerTeam).remove(targetId);

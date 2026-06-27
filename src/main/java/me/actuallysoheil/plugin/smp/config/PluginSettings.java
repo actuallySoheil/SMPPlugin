@@ -7,6 +7,11 @@ import lombok.experimental.Accessors;
 @Data
 public final class PluginSettings {
 
+    // === Database Settings ===
+    private String databaseUri;
+    private String databaseName;
+
+    // === Team Settings ===
     private String allowedTeamIdRegex;
     private int maxTeamIdLength;
     private int teamCreationCooldownTimeSeconds;

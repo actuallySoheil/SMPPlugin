@@ -1,4 +1,10 @@
 settings:
+  # Settings related to database.
+  database:
+    # Format: mongodb://user:password@host:port/
+    uri: "mongodb://admin:admin@localhost:27017/"
+    name: "smp"
+
   # Settings related to teams.
   team:
     # Allowed team id regex input for team creation. (Default: "^[a-zA-Z0-9_]+$")

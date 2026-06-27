@@ -23,4 +23,6 @@ dependencies {
     annotationProcessor(lombok)
 
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+
+    compileOnly("org.mongodb:mongodb-driver-sync:5.8.0")
 }

@@ -2,6 +2,7 @@ package me.actuallysoheil.plugin.smp.manager;
 
 import lombok.val;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
+import me.actuallysoheil.plugin.smp.database.dao.TeamDao;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
@@ -18,20 +19,28 @@ import java.util.concurrent.TimeUnit;
 
 public final class TeamManager {
 
-    private final @NotNull HashSet<SMPTeam> teams;
-
     private final @NotNull PluginSettings pluginSettings;
+    private final @NotNull TeamDao teamDao;
+
+    private final @NotNull HashSet<SMPTeam> teams;
 
     // todo: resume cooldown time on server restart.
     private final @NotNull TimedHashSet<UUID> teamCreationCooldown;
     private final @NotNull TimedHashSet<UUID> teamHomeCooldown;
 
-    public TeamManager(@NotNull PluginSettings pluginSettings) {
+    public TeamManager(@NotNull PluginSettings pluginSettings,
+                       @NotNull TeamDao teamDao) {
         this.pluginSettings = pluginSettings;
+        this.teamDao = teamDao;
+
         this.teams = new HashSet<>();
 
         this.teamCreationCooldown = new TimedHashSet<>();
         this.teamHomeCooldown = new TimedHashSet<>();
+    }
+
+    public void loadTeamsFromDatabase() {
+        this.teams.addAll(this.teamDao.findAll());
     }
 
     public @NotNull TeamCreationStatus createTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
@@ -41,7 +50,10 @@ public final class TeamManager {
         if (findTeamById(teamId) != null) return TeamCreationStatus.TEAM_ID_EXISTS;
         if (this.teamCreationCooldown.contains(teamLeaderId)) return TeamCreationStatus.PLAYER_TEAM_CREATION_COOLDOWN;
 
-        this.teams.add(new SMPTeam(teamId, teamLeaderId));
+        val newTeam = new SMPTeam(teamId, teamLeaderId);
+        this.teams.add(newTeam);
+        this.teamDao.insert(newTeam);
+
         this.teamCreationCooldown.add(
                 teamLeaderId, this.pluginSettings.teamCreationCooldownTimeSeconds(), TimeUnit.SECONDS
         );
@@ -58,6 +70,8 @@ public final class TeamManager {
         playerTeam.teamMembers().clear();
 
         this.teams.remove(playerTeam);
+        this.teamDao.delete(teamId);
+
         return TeamDisbandStatus.SUCCESSFUL;
     }
 
@@ -78,6 +92,7 @@ public final class TeamManager {
                 PlaceholderLike.builder()
                         .append("member_name", targetPlayer.getName() != null ? targetPlayer.getName() : "???")
         );
+        this.teamDao.update(playerTeam);
 
         return TeamKickMemberStatus.SUCCESSFUL;
     }
@@ -107,6 +122,7 @@ public final class TeamManager {
                         .append("new_leader", newLeaderUsername)
         );
         playerTeam.teamLeaderId(targetId);
+        this.teamDao.update(playerTeam);
 
         return TeamTransferStatus.SUCCESSFUL;
     }
@@ -125,6 +141,7 @@ public final class TeamManager {
                 LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
                 PlaceholderLike.builder().append("member_name", memberUsername)
         );
+        this.teamDao.update(playerTeam);
 
         return TeamLeaveStatus.SUCCESSFUL;
     }

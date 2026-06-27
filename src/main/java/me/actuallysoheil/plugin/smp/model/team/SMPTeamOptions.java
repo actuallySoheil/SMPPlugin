@@ -1,9 +1,6 @@
 package me.actuallysoheil.plugin.smp.model.team;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import me.actuallysoheil.plugin.smp.utility.StringUtility;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -14,23 +11,24 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 @Accessors(fluent = true)
+@NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "smpTeam")
-@ToString(of = {"tagName", "tagColor", "friendlyFire", "chatMuted"})
+@EqualsAndHashCode
+@ToString(of = {"tagName", "tagColor", "friendlyFire", "chatMuted", "homeLocation"})
 public final class SMPTeamOptions {
 
-    private final @NotNull SMPTeam smpTeam;
+    private transient @Nullable SMPTeam smpTeam;
 
-    private @Nullable Location homeLocation;
-
-    private @NotNull String tagName;
+    private @NotNull String tagName = "";
     private @UnknownNullability NamedTextColor tagColor = NamedTextColor.DARK_GRAY;
 
     private boolean friendlyFire;
     private boolean chatMuted;
 
-    private Team scoreboardTeam;
+    private @Nullable Location homeLocation;
+
+    private transient Team scoreboardTeam;
 
     public SMPTeamOptions(@NotNull SMPTeam smpTeam) {
         this.smpTeam = smpTeam;

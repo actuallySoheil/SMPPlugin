@@ -9,6 +9,7 @@ import me.actuallysoheil.plugin.smp.model.audience.SMPAudience;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import net.kyori.adventure.text.Component;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,25 +20,35 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @Getter
 @EqualsAndHashCode(of = {"teamId", "teamLeaderId"})
-@ToString(of = {"teamId", "teamMembers", "teamOptions", "teamLeaderId"})
+@ToString(of = {"teamId", "teamMembers", "teamLeaderId", "teamOptions"})
 public final class SMPTeam {
 
-    private final @NotNull String teamId;
-    private final @NotNull HashSet<UUID> teamMembers;
-    private final @NotNull SMPTeamOptions teamOptions;
+    @BsonId
+    @Setter
+    private @NotNull String teamId;
+    @Setter
+    private @NotNull HashSet<UUID> teamMembers;
+    @Setter
+    private @NotNull SMPTeamOptions teamOptions;
     @Setter
     private @NotNull UUID teamLeaderId;
-    private SMPAudience teamAudience;
+
+    private transient SMPAudience teamAudience;
+
+    @SuppressWarnings("unused") // Used by database.
+    public SMPTeam() {
+        this.teamMembers = new HashSet<>();
+        this.teamOptions = new SMPTeamOptions(this);
+    }
 
     public SMPTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
         this.teamId = teamId;
         this.teamLeaderId = teamLeaderId;
-
         this.teamMembers = new HashSet<>();
         this.teamMembers.add(teamLeaderId);
 
         this.teamOptions = new SMPTeamOptions(this);
-        this.teamOptions.tagName(this.teamId);
+        this.teamOptions.tagName(teamId);
 
         updateTeamAudience();
     }
@@ -62,16 +73,16 @@ public final class SMPTeam {
     }
 
     public void sendMessage(@NotNull Component component) {
-        this.teamAudience.sendMessage(component);
+        if (this.teamAudience != null) this.teamAudience.sendMessage(component);
     }
 
     public void sendLocalizedMessage(@NotNull LanguagePath languagePath) {
-        this.teamAudience.sendLocalizedMessage(languagePath);
+        if (this.teamAudience != null) this.teamAudience.sendLocalizedMessage(languagePath);
     }
 
     public void sendLocalizedMessage(@NotNull LanguagePath languagePath,
                                      @NotNull PlaceholderLike placeholderLike) {
-        this.teamAudience.sendLocalizedMessage(languagePath, placeholderLike);
+        if (this.teamAudience != null) this.teamAudience.sendLocalizedMessage(languagePath, placeholderLike);
     }
 
     public boolean isTeamMember(@NotNull UUID playerId) {
