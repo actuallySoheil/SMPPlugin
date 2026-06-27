@@ -6,8 +6,11 @@ import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import me.actuallysoheil.plugin.smp.database.dao.TeamOptionsDao;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeamOptions;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamChangeOptionsStatus;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -25,11 +28,11 @@ public final class TeamOptionsManager {
 
         val currentOptions = playerTeam.teamOptions();
         val testOptions = new SMPTeamOptions(playerTeam);
-        testOptions.homeLocation(currentOptions.homeLocation());
         testOptions.tagName(currentOptions.tagName());
         testOptions.tagColor(currentOptions.tagColor());
         testOptions.friendlyFire(currentOptions.friendlyFire());
         testOptions.chatMuted(currentOptions.chatMuted());
+        testOptions.homeLocation(currentOptions.homeLocation());
 
         try {
             optionsBuilder.apply(testOptions);
@@ -40,15 +43,22 @@ public final class TeamOptionsManager {
         val validationStatus = validateTeamOptions(testOptions);
         if (validationStatus != TeamChangeOptionsStatus.SUCCESSFUL) return validationStatus;
 
-        currentOptions.homeLocation(testOptions.homeLocation());
         currentOptions.tagName(testOptions.tagName());
         currentOptions.tagColor(testOptions.tagColor());
         currentOptions.friendlyFire(testOptions.friendlyFire());
         currentOptions.chatMuted(testOptions.chatMuted());
+        currentOptions.homeLocation(testOptions.homeLocation());
 
         this.teamOptionsDao.update(currentOptions);
 
         return TeamChangeOptionsStatus.SUCCESSFUL;
+    }
+
+    private boolean isInBlacklistedWorld(@NotNull World world) {
+        return this.pluginSettings.blacklistedTeamHomeWorlds().stream()
+                .map(Bukkit::getWorld)
+                .filter(Objects::nonNull)
+                .anyMatch(blacklistedWorld -> blacklistedWorld.getName().equals(world.getName()));
     }
 
     private @NotNull TeamChangeOptionsStatus validateTeamOptions(@NotNull SMPTeamOptions teamOptions) {
@@ -57,6 +67,11 @@ public final class TeamOptionsManager {
         if (teamOptions.tagName().length() > this.pluginSettings.maxTeamIdLength())
             return TeamChangeOptionsStatus.TAG_NAME_LONG;
         if (teamOptions.tagColor() == null) return TeamChangeOptionsStatus.TAG_COLOR_INVALID;
+
+        val homeLocation = teamOptions.homeLocation();
+        if (homeLocation != null)
+            if (isInBlacklistedWorld(homeLocation.getWorld()))
+                return TeamChangeOptionsStatus.HOME_WORLD_BLACKLISTED;
 
         return TeamChangeOptionsStatus.SUCCESSFUL;
     }
