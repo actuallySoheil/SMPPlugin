@@ -63,7 +63,7 @@ public final class SMPTeam {
         updateTeamAudience();
     }
 
-    private void updateTeamAudience() {
+    public void updateTeamAudience() {
         this.teamAudience = SMPAudience.of(
                 this.teamMembers.stream()
                         .map(Bukkit::getPlayer)

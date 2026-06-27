@@ -21,8 +21,8 @@ public final class LanguageManager {
 
     private final @NotNull File languagesFolder;
 
-    private final @NotNull HashSet<Language> languages = new HashSet<>();
-    private final @NotNull HashMap<UUID, Language> playerLanguageMap = new HashMap<>();
+    private final @NotNull HashSet<Language> languages;
+    private final @NotNull HashMap<UUID, Language> playerLanguageMap;
 
     @Getter
     private @Nullable Language defaultLanguage;
@@ -30,6 +30,9 @@ public final class LanguageManager {
     public LanguageManager(@NotNull SMPPlugin plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
+
+        this.languages = new HashSet<>();
+        this.playerLanguageMap = new HashMap<>();
 
         this.languagesFolder = new File(plugin.getDataFolder(), "languages");
     }

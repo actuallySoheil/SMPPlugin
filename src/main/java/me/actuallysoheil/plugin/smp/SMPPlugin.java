@@ -53,7 +53,7 @@ public final class SMPPlugin extends JavaPlugin {
         this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamManager, this.teamOptionsDao);
 
         getServer().getPluginManager().registerEvents(
-                new PlayerListener(this.languageManager), this
+                new PlayerListener(this.languageManager, this.teamManager), this
         );
         registerCommands();
     }

@@ -163,6 +163,13 @@ public final class TeamManager {
         return TeamHomeTeleportStatus.SUCCESSFUL;
     }
 
+    public void updateTeamAudience(@NotNull UUID playerId) {
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) return;
+
+        playerTeam.updateTeamAudience();
+    }
+
     public void unloadTeams() {
         this.teams.clear();
     }
