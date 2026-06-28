@@ -1,6 +1,6 @@
 settings:
   database:
-    # Format: mongodb://user:password@host:port/
+    # Format: mongodb://username:password@host:port/
     uri: "mongodb://admin:admin@localhost:27017/"
     name: "smp"
 
