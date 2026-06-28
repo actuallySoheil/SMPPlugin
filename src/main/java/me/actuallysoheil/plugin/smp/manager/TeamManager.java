@@ -21,6 +21,7 @@ public final class TeamManager {
 
     private final @NotNull PluginSettings pluginSettings;
     private final @NotNull TeamDao teamDao;
+    private final @NotNull TeamTagManager teamTagManager;
 
     private final @NotNull HashSet<SMPTeam> teams;
 
@@ -29,9 +30,11 @@ public final class TeamManager {
     private final @NotNull TimedHashSet<UUID> teamHomeCooldown;
 
     public TeamManager(@NotNull PluginSettings pluginSettings,
-                       @NotNull TeamDao teamDao) {
+                       @NotNull TeamDao teamDao,
+                       @NotNull TeamTagManager teamTagManager) {
         this.pluginSettings = pluginSettings;
         this.teamDao = teamDao;
+        this.teamTagManager = teamTagManager;
 
         this.teams = new HashSet<>();
 
@@ -40,7 +43,9 @@ public final class TeamManager {
     }
 
     public void loadTeamsFromDatabase() {
-        this.teams.addAll(this.teamDao.findAll());
+        val loadedTeams = this.teamDao.findAll();
+        this.teams.addAll(loadedTeams);
+        loadedTeams.forEach(this.teamTagManager::updateScoreboardTeam);
     }
 
     public @NotNull TeamCreationStatus createTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
@@ -53,6 +58,10 @@ public final class TeamManager {
         val newTeam = new SMPTeam(teamId, teamLeaderId);
         this.teams.add(newTeam);
         this.teamDao.insert(newTeam);
+
+        this.teamTagManager.createTeamScoreboardForTeam(newTeam.teamId());
+        this.teamTagManager.updateScoreboardTeam(newTeam);
+        this.teamTagManager.updateScoreboardTeamMembers(newTeam);
 
         this.teamCreationCooldown.add(
                 teamLeaderId, this.pluginSettings.teamCreationCooldownTimeSeconds(), TimeUnit.SECONDS
@@ -67,6 +76,8 @@ public final class TeamManager {
         if (!playerTeam.teamId().equalsIgnoreCase(teamId)) return TeamDisbandStatus.TEAM_NAME_INVALID;
 
         playerTeam.sendLocalizedMessage(LanguagePath.BROADCAST_TEAM_DISBAND);
+
+        this.teamTagManager.removeScoreboardTeam(teamId);
         playerTeam.teamMembers().clear();
 
         this.teams.remove(playerTeam);
@@ -87,6 +98,8 @@ public final class TeamManager {
         if (!playerTeam.isTeamMember(targetId)) return TeamKickMemberStatus.TARGET_NOT_IN_TEAM;
 
         playerTeam.removeMember(targetId);
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+
         playerTeam.sendLocalizedMessage(
                 LanguagePath.BROADCAST_TEAM_KICK,
                 PlaceholderLike.builder()
@@ -136,6 +149,7 @@ public final class TeamManager {
         val memberUsername = offlinePlayer.getName() != null ? offlinePlayer.getName() : "A member";
 
         playerTeam.teamMembers().remove(playerId);
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
 
         playerTeam.sendLocalizedMessage(
                 LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
@@ -161,6 +175,13 @@ public final class TeamManager {
         player.teleportAsync(homeLocation);
 
         return TeamHomeTeleportStatus.SUCCESSFUL;
+    }
+
+    public void updateScoreboardTeamFor(@NotNull UUID playerId) {
+        val playerTeam = findTeamByPlayerId(playerId);
+        if (playerTeam == null) return;
+
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
     }
 
     public void updateTeamAudience(@NotNull UUID playerId) {

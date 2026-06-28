@@ -25,14 +25,19 @@ public final class TeamInvitationManager {
     private final @NotNull PluginSettings pluginSettings;
     private final @NotNull TeamDao teamDao;
 
+    private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
+
     private final @NotNull HashMap<SMPTeam, HashSet<UUID>> pendingTeamInvites;
 
     public TeamInvitationManager(@NotNull PluginSettings pluginSettings,
                                  @NotNull TeamDao teamDao,
+                                 @NotNull TeamTagManager teamTagManager,
                                  @NotNull TeamManager teamManager) {
         this.pluginSettings = pluginSettings;
         this.teamDao = teamDao;
+
+        this.teamTagManager = teamTagManager;
         this.teamManager = teamManager;
 
         this.pendingTeamInvites = new HashMap<>();
@@ -143,6 +148,7 @@ public final class TeamInvitationManager {
         if (playerTeam != null) return TeamAcceptInvitationStatus.PLAYER_HAS_TEAM;
 
         targetTeam.addMember(playerId);
+        this.teamTagManager.updateScoreboardTeamMembers(targetTeam);
 
         return TeamAcceptInvitationStatus.SUCCESSFUL;
     }

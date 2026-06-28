@@ -27,6 +27,7 @@ public final class SMPPlugin extends JavaPlugin {
     private TeamDao teamDao;
     private TeamOptionsDao teamOptionsDao;
 
+    private TeamTagManager teamTagManager;
     private TeamManager teamManager;
     private TeamInvitationManager teamInvitationManager;
     private TeamOptionsManager teamOptionsManager;
@@ -47,10 +48,11 @@ public final class SMPPlugin extends JavaPlugin {
         this.teamDao = new TeamDao(this.databaseManager);
         this.teamOptionsDao = new TeamOptionsDao(this.databaseManager);
 
-        this.teamManager = new TeamManager(pluginSettings, this.teamDao);
+        this.teamTagManager = new TeamTagManager();
+        this.teamManager = new TeamManager(pluginSettings, this.teamDao, this.teamTagManager);
         this.teamManager.loadTeamsFromDatabase();
-        this.teamInvitationManager = new TeamInvitationManager(pluginSettings, this.teamDao, this.teamManager);
-        this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamManager, this.teamOptionsDao);
+        this.teamInvitationManager = new TeamInvitationManager(pluginSettings, this.teamDao, this.teamTagManager, this.teamManager);
+        this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamTagManager, this.teamManager, this.teamOptionsDao);
 
         getServer().getPluginManager().registerEvents(
                 new PlayerListener(this.languageManager, this.teamManager), this

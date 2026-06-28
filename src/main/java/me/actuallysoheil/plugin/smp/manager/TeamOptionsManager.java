@@ -17,7 +17,10 @@ import java.util.UUID;
 public final class TeamOptionsManager {
 
     private final @NotNull PluginSettings pluginSettings;
+
+    private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
+
     private final @NotNull TeamOptionsDao teamOptionsDao;
 
     public @NotNull TeamChangeOptionsStatus changeTeamOptions(@NotNull UUID playerId,
@@ -41,13 +44,16 @@ public final class TeamOptionsManager {
         }
 
         val validationStatus = validateTeamOptions(testOptions);
-        if (validationStatus != TeamChangeOptionsStatus.SUCCESSFUL) return validationStatus;
+        if (!validationStatus.equals(TeamChangeOptionsStatus.SUCCESSFUL)) return validationStatus;
 
         currentOptions.tagName(testOptions.tagName());
         currentOptions.tagColor(testOptions.tagColor());
         currentOptions.friendlyFire(testOptions.friendlyFire());
         currentOptions.chatMuted(testOptions.chatMuted());
         currentOptions.homeLocation(testOptions.homeLocation());
+
+        this.teamTagManager.updateScoreboardTeam(playerTeam);
+        this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
 
         this.teamOptionsDao.update(currentOptions);
 

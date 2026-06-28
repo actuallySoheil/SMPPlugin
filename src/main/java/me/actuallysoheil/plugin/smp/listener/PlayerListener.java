@@ -1,6 +1,7 @@
 package me.actuallysoheil.plugin.smp.listener;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import me.actuallysoheil.plugin.smp.manager.LanguageManager;
 import me.actuallysoheil.plugin.smp.manager.TeamManager;
 import org.bukkit.event.EventHandler;
@@ -17,7 +18,9 @@ public final class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
-        this.teamManager.updateTeamAudience(event.getPlayer().getUniqueId());
+        val playerId = event.getPlayer().getUniqueId();
+        this.teamManager.updateScoreboardTeamFor(playerId);
+        this.teamManager.updateTeamAudience(playerId);
     }
 
     @EventHandler

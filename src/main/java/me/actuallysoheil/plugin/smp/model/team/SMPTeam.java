@@ -27,11 +27,13 @@ public final class SMPTeam {
     @Setter
     private @NotNull String teamId;
     @Setter
+    private @NotNull UUID teamLeaderId;
+
+    @Setter
     private @NotNull HashSet<UUID> teamMembers;
+
     @Setter
     private @NotNull SMPTeamOptions teamOptions;
-    @Setter
-    private @NotNull UUID teamLeaderId;
 
     private transient SMPAudience teamAudience;
 
@@ -44,13 +46,12 @@ public final class SMPTeam {
     public SMPTeam(@NotNull String teamId, @NotNull UUID teamLeaderId) {
         this.teamId = teamId;
         this.teamLeaderId = teamLeaderId;
+
         this.teamMembers = new HashSet<>();
-        this.teamMembers.add(teamLeaderId);
 
         this.teamOptions = new SMPTeamOptions(this);
-        this.teamOptions.tagName(teamId);
 
-        updateTeamAudience();
+        addMember(teamLeaderId);
     }
 
     public void addMember(@NotNull UUID playerId) {
