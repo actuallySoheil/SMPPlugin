@@ -70,7 +70,7 @@ public final class TeamOptionsManager {
     private @NotNull TeamChangeOptionsStatus validateTeamOptions(@NotNull SMPTeamOptions teamOptions) {
         if (!teamOptions.tagName().matches(this.pluginSettings.allowedTeamIdRegex()))
             return TeamChangeOptionsStatus.TAG_NAME_INVALID;
-        if (teamOptions.tagName().length() > this.pluginSettings.maxTeamIdLength())
+        if (teamOptions.tagName().length() > this.pluginSettings.maxTeamTagLength())
             return TeamChangeOptionsStatus.TAG_NAME_LONG;
         if (teamOptions.tagColor() == null) return TeamChangeOptionsStatus.TAG_COLOR_INVALID;
 
