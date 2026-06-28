@@ -57,8 +57,8 @@ public enum LanguagePath {
     MESSAGE_COMMAND_TEAM_DISBAND_ERROR_INVALID_TEAM_NAME("message.command.team.disband.error.invalid-team-name"),
 
     // --- Invitation ---
-    MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ALREADY_INVITED("message.command.team.error.invitation.error.already-invited"),
-    MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING("message.command.team.error.invitation.error.lacking"),
+    MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ALREADY_INVITED("message.command.team.invitation.error.already-invited"),
+    MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING("message.command.team.invitation.error.lacking"),
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY("message.command.team.invitation.error.on-capacity"),
 
     // --- Leave ---
