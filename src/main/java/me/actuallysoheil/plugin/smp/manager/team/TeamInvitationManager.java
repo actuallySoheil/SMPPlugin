@@ -65,10 +65,10 @@ public final class TeamInvitationManager {
             return TeamInvitationStatus.TARGET_IS_IN_ANOTHER_TEAM;
         }
 
-        val targetIsAlreadyInvited = pendingTeamInvites(playerTeam).contains(targetId);
+        val targetIsAlreadyInvited = pendingTeamInvitations(playerTeam).contains(targetId);
         if (targetIsAlreadyInvited) return TeamInvitationStatus.TARGET_ALREADY_INVITED;
 
-        pendingTeamInvites(playerTeam).add(targetId);
+        pendingTeamInvitations(playerTeam).add(targetId);
 
         val teamLeader = Bukkit.getPlayer(playerId);
         if (teamLeader != null) {
@@ -95,7 +95,7 @@ public final class TeamInvitationManager {
                     teamInvitationTask.cancel();
                 },
                 () -> {
-                    pendingTeamInvites(playerTeam).remove(targetId);
+                    pendingTeamInvitations(playerTeam).remove(targetId);
                     playerTeam.sendLocalizedMessage(
                             LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_JOIN,
                             PlaceholderLike.builder().append("member_name", targetUsername)
@@ -103,7 +103,7 @@ public final class TeamInvitationManager {
                     this.teamDao.update(playerTeam);
                 },
                 () -> {
-                    pendingTeamInvites(playerTeam).remove(targetId);
+                    pendingTeamInvitations(playerTeam).remove(targetId);
 
                     val offlineLeader = Bukkit.getOfflinePlayer(playerId);
                     val offlineLeaderUsername = offlineLeader.getName() != null
@@ -137,7 +137,7 @@ public final class TeamInvitationManager {
         val targetTeam = this.teamManager.findTeamById(teamId);
         if (targetTeam == null) return TeamAcceptInvitationStatus.TEAM_INVALID;
 
-        val pendingTargetTeamInvites = pendingTeamInvites(targetTeam);
+        val pendingTargetTeamInvites = pendingTeamInvitations(targetTeam);
         if (pendingTargetTeamInvites.isEmpty() || !pendingTargetTeamInvites.contains(playerId))
             return TeamAcceptInvitationStatus.PLAYER_LACKING_INVITE;
 
@@ -158,7 +158,7 @@ public final class TeamInvitationManager {
         this.pendingTeamInvites.clear();
     }
 
-    private @NotNull HashSet<UUID> pendingTeamInvites(@NotNull SMPTeam team) {
+    private @NotNull HashSet<UUID> pendingTeamInvitations(@NotNull SMPTeam team) {
         return this.pendingTeamInvites.computeIfAbsent(team, _ -> new HashSet<>());
     }
 
