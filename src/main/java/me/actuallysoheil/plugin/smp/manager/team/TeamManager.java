@@ -59,6 +59,7 @@ public final class TeamManager {
         this.teams.add(newTeam);
         this.teamDao.insert(newTeam);
 
+        this.teamTagManager.removePlayerFromDefaultScoreboardTeam(Bukkit.getOfflinePlayer(teamLeaderId));
         this.teamTagManager.createTeamScoreboardForTeam(newTeam.teamId());
         this.teamTagManager.updateScoreboardTeam(newTeam);
         this.teamTagManager.updateScoreboardTeamMembers(newTeam);
@@ -78,6 +79,10 @@ public final class TeamManager {
         playerTeam.sendLocalizedMessage(LanguagePath.BROADCAST_TEAM_DISBAND);
 
         this.teamTagManager.removeScoreboardTeam(teamId);
+        playerTeam.teamMembers().stream()
+                .map(Bukkit::getOfflinePlayer)
+                .forEach(this.teamTagManager::addPlayerToDefaultScoreboardTeam);
+
         playerTeam.teamMembers().clear();
 
         this.teams.remove(playerTeam);
@@ -99,6 +104,7 @@ public final class TeamManager {
 
         playerTeam.removeMember(targetId);
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+        this.teamTagManager.addPlayerToDefaultScoreboardTeam(targetPlayer);
 
         playerTeam.sendLocalizedMessage(
                 LanguagePath.BROADCAST_TEAM_KICK,
@@ -150,6 +156,7 @@ public final class TeamManager {
 
         playerTeam.teamMembers().remove(playerId);
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
+        this.teamTagManager.addPlayerToDefaultScoreboardTeam(offlinePlayer);
 
         playerTeam.sendLocalizedMessage(
                 LanguagePath.BROADCAST_TEAM_GENERAL_MEMBER_LEAVE,
@@ -179,7 +186,10 @@ public final class TeamManager {
 
     public void updateScoreboardTeamFor(@NotNull UUID playerId) {
         val playerTeam = findTeamByPlayerId(playerId);
-        if (playerTeam == null) return;
+        if (playerTeam == null) {
+            this.teamTagManager.addPlayerToDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
+            return;
+        }
 
         this.teamTagManager.updateScoreboardTeamMembers(playerTeam);
     }

@@ -148,6 +148,7 @@ public final class TeamInvitationManager {
         if (playerTeam != null) return TeamAcceptInvitationStatus.PLAYER_HAS_TEAM;
 
         targetTeam.addMember(playerId);
+        this.teamTagManager.removePlayerFromDefaultScoreboardTeam(Bukkit.getOfflinePlayer(playerId));
         this.teamTagManager.updateScoreboardTeamMembers(targetTeam);
 
         return TeamAcceptInvitationStatus.SUCCESSFUL;
