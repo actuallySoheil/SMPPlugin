@@ -72,6 +72,7 @@ public final class SMPPlugin extends JavaPlugin {
 
         this.teamInvitationManager.removeActivePendingInvites();
         this.teamManager.unloadTeams();
+        this.teamTagManager.unregisterScoreboardTeams();
 
         this.languageManager.unloadLanguages();
     }

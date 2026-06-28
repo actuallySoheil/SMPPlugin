@@ -94,6 +94,12 @@ public final class TeamTagManager {
         this.scoreboardTeams.remove(teamId);
     }
 
+    public void unregisterScoreboardTeams() {
+        this.defaultScoreboardTeam.unregister();
+        this.scoreboardTeams.values().forEach(Team::unregister);
+        this.scoreboardTeams.clear();
+    }
+
     public @Nullable Team findScoreboardTeamByTeamId(@NotNull String teamId) {
         return this.scoreboardTeams.get(teamId);
     }
