@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
-import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.manager.team.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;

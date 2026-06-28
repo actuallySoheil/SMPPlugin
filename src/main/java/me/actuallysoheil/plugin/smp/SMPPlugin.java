@@ -10,6 +10,10 @@ import me.actuallysoheil.plugin.smp.database.dao.TeamDao;
 import me.actuallysoheil.plugin.smp.database.dao.TeamOptionsDao;
 import me.actuallysoheil.plugin.smp.listener.PlayerListener;
 import me.actuallysoheil.plugin.smp.manager.*;
+import me.actuallysoheil.plugin.smp.manager.team.TeamInvitationManager;
+import me.actuallysoheil.plugin.smp.manager.team.TeamManager;
+import me.actuallysoheil.plugin.smp.manager.team.TeamOptionsManager;
+import me.actuallysoheil.plugin.smp.manager.team.TeamTagManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Accessors(fluent = true)

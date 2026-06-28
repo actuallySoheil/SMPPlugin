@@ -1,4 +1,4 @@
-package me.actuallysoheil.plugin.smp.manager;
+package me.actuallysoheil.plugin.smp.manager.team;
 
 import lombok.val;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;

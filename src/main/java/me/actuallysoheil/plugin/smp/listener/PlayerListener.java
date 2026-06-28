@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.listener;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import me.actuallysoheil.plugin.smp.manager.LanguageManager;
-import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.manager.team.TeamManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

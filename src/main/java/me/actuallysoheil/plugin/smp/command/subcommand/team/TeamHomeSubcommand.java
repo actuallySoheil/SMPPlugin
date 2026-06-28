@@ -3,7 +3,7 @@ package me.actuallysoheil.plugin.smp.command.subcommand.team;
 import lombok.RequiredArgsConstructor;
 import me.actuallysoheil.plugin.smp.command.api.SubCommand;
 import me.actuallysoheil.plugin.smp.command.api.SubCommandHandler;
-import me.actuallysoheil.plugin.smp.manager.TeamManager;
+import me.actuallysoheil.plugin.smp.manager.team.TeamManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
 import org.bukkit.entity.Player;
