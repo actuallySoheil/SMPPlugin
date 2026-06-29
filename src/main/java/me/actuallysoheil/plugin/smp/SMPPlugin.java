@@ -8,6 +8,7 @@ import me.actuallysoheil.plugin.smp.command.SMPCommand;
 import me.actuallysoheil.plugin.smp.command.TeamCommand;
 import me.actuallysoheil.plugin.smp.database.dao.TeamDao;
 import me.actuallysoheil.plugin.smp.database.dao.TeamOptionsDao;
+import me.actuallysoheil.plugin.smp.listener.ChatListener;
 import me.actuallysoheil.plugin.smp.listener.PlayerListener;
 import me.actuallysoheil.plugin.smp.manager.DatabaseManager;
 import me.actuallysoheil.plugin.smp.manager.LanguageManager;
@@ -16,7 +17,11 @@ import me.actuallysoheil.plugin.smp.manager.team.TeamInvitationManager;
 import me.actuallysoheil.plugin.smp.manager.team.TeamManager;
 import me.actuallysoheil.plugin.smp.manager.team.TeamOptionsManager;
 import me.actuallysoheil.plugin.smp.manager.team.TeamTagManager;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 @Accessors(fluent = true)
 @Getter
@@ -60,8 +65,9 @@ public final class SMPPlugin extends JavaPlugin {
         this.teamInvitationManager = new TeamInvitationManager(pluginSettings, this.teamDao, this.teamTagManager, this.teamManager);
         this.teamOptionsManager = new TeamOptionsManager(pluginSettings, this.teamTagManager, this.teamManager, this.teamOptionsDao);
 
-        getServer().getPluginManager().registerEvents(
-                new PlayerListener(this.languageManager, this.teamManager), this
+        registerListeners(
+                new PlayerListener(this.languageManager, this.teamManager),
+                new ChatListener(pluginSettings)
         );
         registerCommands();
     }
@@ -83,6 +89,12 @@ public final class SMPPlugin extends JavaPlugin {
         new SMPCommand(this);
         new TeamCommand(this);
         new LanguageCommand(this.languageManager);
+    }
+
+    private void registerListeners(@NotNull Listener... listeners) {
+        val pluginManager = getServer().getPluginManager();
+        Arrays.stream(listeners)
+                .forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
     public void disablePlugin() {

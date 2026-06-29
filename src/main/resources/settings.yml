@@ -11,6 +11,7 @@ settings:
     # light_purple, dark_purple, gray, dark_gray,
     # gold, yellow, white, black
     default-name-tag-color: "gray"
+    global-chat-format: "<display_name><white>: <message>"
 
   team:
     # Allowed team id regex input for team creation. (Default: "^[a-zA-Z0-9_]+$")

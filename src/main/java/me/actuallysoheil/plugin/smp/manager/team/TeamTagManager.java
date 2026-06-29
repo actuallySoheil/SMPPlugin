@@ -91,6 +91,11 @@ public final class TeamTagManager {
                 .forEach(player -> {
                     removePlayerFromDefaultScoreboardTeam(player);
                     scoreboardTeam.addPlayer(player);
+                    val displayName = Component.empty()
+                            .append(scoreboardTeam.prefix())
+                            .append(player.name())
+                            .color(scoreboardTeam.color());
+                    player.displayName(displayName);
                 });
     }
 
