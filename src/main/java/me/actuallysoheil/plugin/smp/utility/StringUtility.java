@@ -1,6 +1,7 @@
 package me.actuallysoheil.plugin.smp.utility;
 
 import lombok.experimental.UtilityClass;
+import lombok.val;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +21,12 @@ public final class StringUtility {
 
     public @Nullable NamedTextColor stringToNamedTextColor(@NotNull String color) {
         return NamedTextColor.NAMES.value(color.toLowerCase());
+    }
+
+    public @NotNull NamedTextColor stringToNamedTextColorOrDefault(@NotNull String color,
+                                                                   @NotNull NamedTextColor defaultColor) {
+        val parsedNamedTextColor = stringToNamedTextColor(color);
+        return parsedNamedTextColor != null ? parsedNamedTextColor : defaultColor;
     }
 
 }

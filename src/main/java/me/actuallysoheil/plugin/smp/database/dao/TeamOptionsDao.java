@@ -3,9 +3,8 @@ package me.actuallysoheil.plugin.smp.database.dao;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-import lombok.val;
-import me.actuallysoheil.plugin.smp.model.team.SMPTeamOptions;
 import me.actuallysoheil.plugin.smp.manager.DatabaseManager;
+import me.actuallysoheil.plugin.smp.model.team.SMPTeamOptions;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,11 +28,8 @@ public final class TeamOptionsDao implements IDao<SMPTeamOptions, String> {
 
     @Override
     public void update(@NotNull SMPTeamOptions teamOptions) {
-        val team = teamOptions.smpTeam();
-        if (team == null) return;
-
         this.collection.updateOne(
-                Filters.eq("_id", team.teamId()),
+                Filters.eq("_id", teamOptions.smpTeam().teamId()),
                 Updates.combine(
                         Updates.set("teamOptions.tagName", teamOptions.tagName()),
                         Updates.set("teamOptions.tagColor", teamOptions.tagColor().toString()),

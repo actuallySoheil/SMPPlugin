@@ -1,9 +1,9 @@
 package me.actuallysoheil.plugin.smp.manager.team;
 
 import lombok.val;
+import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
@@ -21,12 +21,16 @@ public final class TeamTagManager {
     private static final @NotNull String DEFAULT_SMP_TEAM_SCOREBOARD_NAME = "zzz";
     private static final @NotNull String SMP_TEAM_PREFIX = "smp_";
 
+    private final @NotNull PluginSettings pluginSettings;
+
     private final @NotNull HashMap<String, Team> scoreboardTeams;
 
     private final @NotNull Scoreboard scoreboard;
     private final @NotNull Team defaultScoreboardTeam;
 
-    public TeamTagManager() {
+    public TeamTagManager(@NotNull PluginSettings pluginSettings) {
+        this.pluginSettings = pluginSettings;
+
         this.scoreboardTeams = new HashMap<>();
 
         this.scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
@@ -36,7 +40,7 @@ public final class TeamTagManager {
             defaultScoreboardTeam = this.scoreboard.registerNewTeam(DEFAULT_SMP_TEAM_SCOREBOARD_NAME);
 
         this.defaultScoreboardTeam = defaultScoreboardTeam;
-        this.defaultScoreboardTeam.color(NamedTextColor.GRAY);
+        updateDefaultScoreboardTeamColor();
     }
 
     public @NotNull Team createTeamScoreboardForTeam(@NotNull String teamId) {
@@ -63,6 +67,10 @@ public final class TeamTagManager {
         scoreboardTeam.prefix(Component.text("[" + tagName + "] ", tagColor));
         scoreboardTeam.color(tagColor);
         scoreboardTeam.setAllowFriendlyFire(teamOptions.friendlyFire());
+    }
+
+    public void updateDefaultScoreboardTeamColor() {
+        this.defaultScoreboardTeam.color(this.pluginSettings.defaultNameTagColor());
     }
 
     public void addPlayerToDefaultScoreboardTeam(@NotNull OfflinePlayer player) {

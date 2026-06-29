@@ -11,7 +11,7 @@ public final class SMPCommand extends CommandParent {
         super("smp", "smp.command.smp");
 
         registerSubCommands(
-                new SMPReloadSubcommand(plugin.pluginSettingsManager(), plugin.languageManager())
+                new SMPReloadSubcommand(plugin.pluginSettingsManager(), plugin.languageManager(), plugin.teamTagManager())
         );
     }
 

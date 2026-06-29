@@ -6,6 +6,8 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import me.actuallysoheil.plugin.smp.config.PluginConfigFile;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
+import me.actuallysoheil.plugin.smp.utility.StringUtility;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.jetbrains.annotations.NotNull;
 
 @Accessors(fluent = true)
@@ -41,6 +43,8 @@ public final class PluginSettingsManager {
         val databaseUri = config.getString("settings.database.uri", "mongodb://admin:admin@localhost:27017/");
         val databaseName = config.getString("settings.database.name", "smp");
 
+        val defaultNameTagColor = config.getString("settings.general.default-name-tag-color", "gray");
+
         val allowedTeamIdRegex = config.getString("settings.team.allowed-id-regex", "^[a-zA-Z0-9_]+$");
         val maxTeamIdLength = config.getInt("settings.team.id-max-length", 12);
         val maxTeamTagLength = config.getInt("settings.team.tag-max-length", 7);
@@ -53,6 +57,10 @@ public final class PluginSettingsManager {
 
         this.pluginSettings.databaseUri(databaseUri);
         this.pluginSettings.databaseName(databaseName);
+
+        this.pluginSettings.defaultNameTagColor(
+                StringUtility.stringToNamedTextColorOrDefault(defaultNameTagColor, NamedTextColor.GRAY)
+        );
 
         this.pluginSettings.allowedTeamIdRegex(allowedTeamIdRegex);
         this.pluginSettings.maxTeamIdLength(maxTeamIdLength);

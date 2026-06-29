@@ -9,7 +9,9 @@ import me.actuallysoheil.plugin.smp.command.TeamCommand;
 import me.actuallysoheil.plugin.smp.database.dao.TeamDao;
 import me.actuallysoheil.plugin.smp.database.dao.TeamOptionsDao;
 import me.actuallysoheil.plugin.smp.listener.PlayerListener;
-import me.actuallysoheil.plugin.smp.manager.*;
+import me.actuallysoheil.plugin.smp.manager.DatabaseManager;
+import me.actuallysoheil.plugin.smp.manager.LanguageManager;
+import me.actuallysoheil.plugin.smp.manager.PluginSettingsManager;
 import me.actuallysoheil.plugin.smp.manager.team.TeamInvitationManager;
 import me.actuallysoheil.plugin.smp.manager.team.TeamManager;
 import me.actuallysoheil.plugin.smp.manager.team.TeamOptionsManager;
@@ -52,7 +54,7 @@ public final class SMPPlugin extends JavaPlugin {
         this.teamDao = new TeamDao(this.databaseManager);
         this.teamOptionsDao = new TeamOptionsDao(this.databaseManager);
 
-        this.teamTagManager = new TeamTagManager();
+        this.teamTagManager = new TeamTagManager(pluginSettings);
         this.teamManager = new TeamManager(pluginSettings, this.teamDao, this.teamTagManager);
         this.teamManager.loadTeamsFromDatabase();
         this.teamInvitationManager = new TeamInvitationManager(pluginSettings, this.teamDao, this.teamTagManager, this.teamManager);
