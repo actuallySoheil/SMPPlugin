@@ -139,8 +139,8 @@ public final class TeamInvitationManager {
         return TeamInvitationStatus.SUCCESSFUL;
     }
 
-    public @NotNull TeamAcceptInvitationStatus acceptInvite(@NotNull String teamId,
-                                                            @NotNull UUID playerId) {
+    public @NotNull TeamAcceptInvitationStatus acceptInvitation(@NotNull String teamId,
+                                                                @NotNull UUID playerId) {
         if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex()))
             return TeamAcceptInvitationStatus.TEAM_ID_INVALID;
 

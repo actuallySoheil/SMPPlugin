@@ -28,7 +28,7 @@ public final class TeamAcceptInvitationSubcommand extends SubCommandHandler {
         }
 
         val teamId = arguments[0].toLowerCase();
-        switch (this.teamInvitationManager.acceptInvite(teamId, player.getUniqueId())) {
+        switch (this.teamInvitationManager.acceptInvitation(teamId, player.getUniqueId())) {
             case PLAYER_HAS_TEAM ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_PLAYER_HAS_TEAM);
             case PLAYER_LACKING_INVITE ->
