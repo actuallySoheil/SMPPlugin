@@ -59,12 +59,14 @@ message:
         error:
           invalid-team-name: "<red>Failed to disband the team. Invalid team name."
       invitation:
+        declined: "<red>You've declined <yellow><host_name></yellow>'s team invitation."
         error:
           already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
           lacking: "<red>You don't have an invitation from this team."
           on-capacity: "<red>Team has reached the maximum amount of members."
           target:
-            disabled-invites: "<red>Target has their team invites disabled."
+            invite-disabled: "<red>Target has their team invites disabled."
+            invite-declined: "<yellow><target_name> <red>has declined your team request."
       leave:
         error:
           is-leader: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."

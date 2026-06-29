@@ -9,6 +9,7 @@ import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamAcceptInvitationStatus;
+import me.actuallysoheil.plugin.smp.model.team.status.TeamDeclineInvitationStatus;
 import me.actuallysoheil.plugin.smp.model.team.status.TeamInvitationStatus;
 import me.actuallysoheil.plugin.smp.task.PlayerTeamInvitationTask;
 import me.actuallysoheil.plugin.smp.utility.SMPMedia;
@@ -101,8 +102,21 @@ public final class TeamInvitationManager {
                 this.pluginSettings,
                 playerTeam, targetPlayer,
                 teamInvitationTask -> {
-                    if (this.teamManager.findTeamById(playerTeam.teamId()) != null) return;
-                    teamInvitationTask.cancel();
+                    if (this.teamManager.findTeamById(playerTeam.teamId()) == null) {
+                        teamInvitationTask.cancel();
+                        return;
+                    }
+
+                    if (!pendingTeamInvitations(playerTeam).contains(targetId)) {
+                        teamInvitationTask.cancel();
+                        if (teamLeader != null)
+                            SMPMedia.sendMessage(
+                                    teamLeader,
+                                    LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_INVITE_DECLINED,
+                                    PlaceholderLike.builder()
+                                            .append("target_name", targetPlayer.getName())
+                            );
+                    }
                 },
                 () -> {
                     pendingTeamInvitations(playerTeam).remove(targetId);
@@ -162,6 +176,23 @@ public final class TeamInvitationManager {
         this.teamTagManager.updateScoreboardTeamMembers(targetTeam);
 
         return TeamAcceptInvitationStatus.SUCCESSFUL;
+    }
+
+    public @NotNull TeamDeclineInvitationStatus declineInvitation(@NotNull String teamId,
+                                                                  @NotNull UUID playerId) {
+        if (!teamId.matches(this.pluginSettings.allowedTeamIdRegex()))
+            return TeamDeclineInvitationStatus.TEAM_ID_INVALID;
+
+        val targetTeam = this.teamManager.findTeamById(teamId);
+        if (targetTeam == null) return TeamDeclineInvitationStatus.TEAM_INVALID;
+
+        val pendingTargetTeamInvites = pendingTeamInvitations(targetTeam);
+        if (pendingTargetTeamInvites.isEmpty() || !pendingTargetTeamInvites.contains(playerId))
+            return TeamDeclineInvitationStatus.PLAYER_LACKING_INVITE;
+
+        pendingTeamInvitations(targetTeam).remove(playerId);
+
+        return TeamDeclineInvitationStatus.SUCCESSFUL;
     }
 
     public void removeActivePendingInvites() {
