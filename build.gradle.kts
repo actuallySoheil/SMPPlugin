@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "me.actuallysoheil.plugin.smp"
-version = "0.1"
+version = "0.2"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
