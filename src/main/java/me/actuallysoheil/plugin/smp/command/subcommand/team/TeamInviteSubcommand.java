@@ -48,6 +48,8 @@ public final class TeamInviteSubcommand extends SubCommandHandler {
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_GENERAL_ERROR_TARGET_IS_SELF);
             case TARGET_ALREADY_INVITED ->
                     SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ALREADY_INVITED);
+            case TARGET_DISABLED_TEAM_INVITES ->
+                    SMPMedia.sendMessage(player, LanguagePath.MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_DISABLED_INVITES);
         }
     }
 

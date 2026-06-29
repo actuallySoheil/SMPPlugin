@@ -3,6 +3,10 @@ language-settings:
   default: true
 
 message:
+  general:
+    status:
+      enabled: "<green>enabled"
+      disabled: "<red>disabled"
   command:
     # general messages
     general:
@@ -10,6 +14,10 @@ message:
         no-permission: "<red>You are not allowed to do this!"
         exception: "<red>Failed to execute <command_label> command. Please contact an admin to solve this issue."
         player-not-found: "<red>Target player is offline."
+
+    player-settings:
+      team:
+        invites-toggled: "<yellow>Team invites have been <status><yellow>."
     
     # language command messages
     language:
@@ -55,6 +63,8 @@ message:
           already-invited: "<red>You've already invited this player. Wait for them to accept the team invitation."
           lacking: "<red>You don't have an invitation from this team."
           on-capacity: "<red>Team has reached the maximum amount of members."
+          target:
+            disabled-invites: "<red>Target has their team invites disabled."
       leave:
         error:
           is-leader: "<red>Team leader cannot leave the team. Use <gold>/team disband</gold> or <gold>/team transfer</gold> to proceed."
@@ -94,5 +104,3 @@ broadcast:
       friendly-fire-toggled: "<newline><team_broadcast_prefix><yellow>Team leader has <team_friendly_fire_status><yellow> friendly fire for the team.<newline>"
       chat-toggled: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <team_chat_muted_status><yellow> the team chat.<newline>"
       home-updated: "<newline><team_broadcast_prefix><aqua><yellow>Team leader has <green>updated</green> the team home.<newline>"
-      enabled: "<green>enabled"
-      disabled: "<red>disabled"

@@ -136,8 +136,8 @@ public final class TeamOptionsSubcommand extends SubCommandHandler {
         val playerTeam = this.teamManager.findTeamByPlayerId(playerId);
         if (playerTeam == null) return;
 
-        val enabledText = SMPMedia.findValueByPath(playerId, BROADCAST_TEAM_OPTION_ENABLED).asText();
-        val disabledText = SMPMedia.findValueByPath(playerId, BROADCAST_TEAM_OPTION_DISABLED).asText();
+        val enabledText = SMPMedia.findValueByPath(playerId, MESSAGE_GENERAL_STATUS_ENABLED).asText();
+        val disabledText = SMPMedia.findValueByPath(playerId, MESSAGE_GENERAL_STATUS_DISABLED).asText();
 
         val broadcastMessage = this.broadcastMessages.get(optionId);
         val placeholder = switch (optionId) {

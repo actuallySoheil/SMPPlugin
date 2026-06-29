@@ -4,6 +4,7 @@ import lombok.val;
 import me.actuallysoheil.plugin.smp.SMPPlugin;
 import me.actuallysoheil.plugin.smp.config.PluginSettings;
 import me.actuallysoheil.plugin.smp.database.dao.TeamDao;
+import me.actuallysoheil.plugin.smp.manager.AccountManager;
 import me.actuallysoheil.plugin.smp.model.language.LanguagePath;
 import me.actuallysoheil.plugin.smp.model.language.placeholder.PlaceholderLike;
 import me.actuallysoheil.plugin.smp.model.team.SMPTeam;
@@ -23,20 +24,24 @@ import java.util.stream.Collectors;
 public final class TeamInvitationManager {
 
     private final @NotNull PluginSettings pluginSettings;
-    private final @NotNull TeamDao teamDao;
 
+    private final @NotNull AccountManager accountManager;
+
+    private final @NotNull TeamDao teamDao;
     private final @NotNull TeamTagManager teamTagManager;
     private final @NotNull TeamManager teamManager;
 
     private final @NotNull HashMap<SMPTeam, HashSet<UUID>> pendingTeamInvites;
 
     public TeamInvitationManager(@NotNull PluginSettings pluginSettings,
+                                 @NotNull AccountManager accountManager,
                                  @NotNull TeamDao teamDao,
                                  @NotNull TeamTagManager teamTagManager,
                                  @NotNull TeamManager teamManager) {
         this.pluginSettings = pluginSettings;
-        this.teamDao = teamDao;
+        this.accountManager = accountManager;
 
+        this.teamDao = teamDao;
         this.teamTagManager = teamTagManager;
         this.teamManager = teamManager;
 
@@ -58,6 +63,11 @@ public final class TeamInvitationManager {
         if (playerId.equals(targetId)) return TeamInvitationStatus.TARGET_IS_SELF;
 
         val targetUsername = targetPlayer.getName();
+
+        val targetAccount = this.accountManager.findOnlineById(targetId);
+        if (targetAccount == null) return TeamInvitationStatus.TARGET_ACCOUNT_NOT_FOUND;
+
+        if (targetAccount.teamInvitesDisabled()) return TeamInvitationStatus.TARGET_DISABLED_TEAM_INVITES;
 
         val targetTeam = this.teamManager.findTeamByPlayerId(targetId);
         if (targetTeam != null) {

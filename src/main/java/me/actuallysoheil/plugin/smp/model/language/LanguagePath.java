@@ -10,6 +10,11 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public enum LanguagePath {
 
+    // === GENERAL ===
+    // > Status
+    MESSAGE_GENERAL_STATUS_ENABLED("message.general.status.enabled"),
+    MESSAGE_GENERAL_STATUS_DISABLED("message.general.status.disabled"),
+
     // === COMMANDS ===
     // > General
     MESSAGE_COMMAND_GENERAL_ERROR_NO_PERMISSION("message.command.general.error.no-permission"),
@@ -22,6 +27,9 @@ public enum LanguagePath {
     MESSAGE_COMMAND_LANGUAGE_PLAYER_UPDATED("message.command.language.updated"),
     MESSAGE_COMMAND_LANGUAGE_ERROR_ALREADY_SELECTED("message.command.language.error.already-selected"),
     MESSAGE_COMMAND_LANGUAGE_ERROR_NOT_FOUND("message.command.language.error.not-found"),
+
+    // > Settings
+    MESSAGE_COMMAND_SETTINGS_TEAM_INVITES_TOGGLED("message.command.player-settings.team.invites-toggled"),
 
     // > Team
 
@@ -60,6 +68,7 @@ public enum LanguagePath {
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ALREADY_INVITED("message.command.team.invitation.error.already-invited"),
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_LACKING("message.command.team.invitation.error.lacking"),
     MESSAGE_COMMAND_TEAM_INVITATION_ERROR_ON_CAPACITY("message.command.team.invitation.error.on-capacity"),
+    MESSAGE_COMMAND_TEAM_INVITATION_ERROR_TARGET_DISABLED_INVITES("message.command.team.invitation.error.target.disabled-invites"),
 
     // --- Leave ---
     MESSAGE_COMMAND_TEAM_LEAVE_ERROR_IS_LEADER("message.command.team.leave.error.is-leader"),
@@ -100,10 +109,7 @@ public enum LanguagePath {
 
     BROADCAST_TEAM_OPTION_FRIENDLY_FIRE_TOGGLED("broadcast.team.option.friendly-fire-toggled"),
     BROADCAST_TEAM_OPTION_CHAT_TOGGLED("broadcast.team.option.chat-toggled"),
-    BROADCAST_TEAM_OPTION_HOME_UPDATED("broadcast.team.option.home-updated"),
-
-    BROADCAST_TEAM_OPTION_ENABLED("broadcast.team.option.enabled"),
-    BROADCAST_TEAM_OPTION_DISABLED("broadcast.team.option.disabled");
+    BROADCAST_TEAM_OPTION_HOME_UPDATED("broadcast.team.option.home-updated");
 
     private final @NotNull String languagePath;
 
